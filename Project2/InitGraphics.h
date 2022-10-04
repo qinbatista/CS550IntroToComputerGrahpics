@@ -57,7 +57,6 @@ void InitGraphics()
     // 	nothing it needs to respond to (which is most of the time)
     // we don't need to do this for this program, and really should set the argument to NULL
     // but, this sets us up nicely for doing animation
-
     glutIdleFunc(Animate);
 
     // init the glew package (a window must be open to do this):
