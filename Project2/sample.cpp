@@ -226,7 +226,7 @@ void CreateAxis();
 void WireFrame();
 void PolygonFrame();
 void Propeller();
-void DoLookModeMenu(int);
+void DoViewModeMenu(int);
 unsigned char *BmpToTexture(char *, int *, int *);
 int ReadInt(FILE *);
 short ReadShort(FILE *);
@@ -347,7 +347,23 @@ void Display()
 
     // set the eye position, look-at position, and up-vector:
 
-    gluLookAt(0.f, 0.f, 10.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f);
+        // set the eye position, look-at position, and up-vector:
+    if (WhichViewMode == INSIDE)
+    {
+        gluLookAt(0, 1.2, 1,     0., 5, 10.,     0., 1., 0.);
+    }
+    else
+    {
+        gluLookAt(11., 7., 9.,     0., 0., 1.6,     0., 1., 0.);
+        // rotate the scene:
+        glRotatef((GLfloat)Yrot, 0., 1., 0.);
+        glRotatef((GLfloat)Xrot, 1., 0., 0.);
+        // uniformly scale the scene:
+        if (Scale < MINSCALE)
+            Scale = MINSCALE;
+        glScalef((GLfloat)Scale, (GLfloat)Scale, (GLfloat)Scale);
+
+    }
 
     // rotate the scene:
 
@@ -422,6 +438,8 @@ void Display()
     glRotatef(BladeAngle*15, 0., 0., 1.);
     glCallList(PropellerList);
     glPopMatrix();
+
+
 
 #ifdef DEMO_Z_FIGHTING
     if (DepthFightingOn != 0)
@@ -635,7 +653,7 @@ void InitMenus()
     glutAddMenuEntry("Perspective", PERSP);
 
 
-    int perspmenu = glutCreateMenu(DoLookModeMenu);
+    int viewModeMenu = glutCreateMenu(DoViewModeMenu);
     glutAddMenuEntry("Outside", OUTSIDE);
     glutAddMenuEntry("Inside", INSIDE);
 
@@ -655,6 +673,7 @@ void InitMenus()
     glutAddSubMenu("Depth Cue", depthcuemenu);
     glutAddSubMenu("Projection", projmenu);
     glutAddMenuEntry("Reset", RESET);
+    glutAddSubMenu(  "ViewMode",          viewModeMenu);
     glutAddSubMenu("Debug", debugmenu);
     glutAddMenuEntry("Quit", QUIT);
 
@@ -662,8 +681,8 @@ void InitMenus()
 
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
-void DoLookModeMenu(int id) {
-    WhichProjection = id;
+void DoViewModeMenu(int id) {
+    WhichViewMode = id;
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }
