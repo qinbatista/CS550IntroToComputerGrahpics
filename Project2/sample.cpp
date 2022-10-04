@@ -14,244 +14,32 @@
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
 #include "glut.h"
-
-//	This is a sample OpenGL / GLUT program
-//
-//	The objective is to draw a 3d object and change the color of the axes
-//		with a glut menu
-//
-//	The left mouse button does rotation
-//	The middle mouse button does scaling
-//	The user interface allows:
-//		1. The axes to be turned on and off
-//		2. The color of the axes to be changed
-//		3. Debugging to be turned on and off
-//		4. Depth cueing to be turned on and off
-//		5. The projection to be changed
-//		6. The transformations to be reset
-//		7. The program to quit
-//
-//	Author:			Joe Graphics
-
-// title of these windows:
-
-const char *WINDOWTITLE = "OpenGL / GLUT Sample -- Qin's Graphics";
-const char *GLUITITLE = "User Interface Window";
-
-// what the glui package defines as true and false:
-
-const int GLUITRUE = true;
-const int GLUIFALSE = false;
-
-// the escape key:
-
-const int ESCAPE = 0x1b;
-
-// initial window size:
-
-const int INIT_WINDOW_SIZE = 600;
-
-// size of the 3d box to be drawn:
-
-const float BOXSIZE = 2.f;
-
-// multiplication factors for input interaction:
-//  (these are known from previous experience)
-
-const float ANGFACT = 1.f;
-const float SCLFACT = 0.005f;
-
-// minimum allowable scale factor:
-
-const float MINSCALE = 0.05f;
-
-// scroll wheel button values:
-
-const int SCROLL_WHEEL_UP = 3;
-const int SCROLL_WHEEL_DOWN = 4;
-
-// equivalent mouse movement when we click the scroll wheel:
-
-const float SCROLL_WHEEL_CLICK_FACTOR = 5.f;
-
-// active mouse buttons (or them together):
-
-const int LEFT = 4;
-const int MIDDLE = 2;
-const int RIGHT = 1;
-
-// which projection:
-
-enum Projections
-{
-    ORTHO,
-    PERSP
-};
-
-// which button:
-
-enum ButtonVals
-{
-    RESET,
-    QUIT
-};
-
-// window background color (rgba):
-
-const GLfloat BACKCOLOR[] = {0., 0., 0., 1.};
-
-// line width for the axes:
-
-const GLfloat AXES_WIDTH = 3.;
-
-// the color numbers:
-// this order must match the radio button order, which must match the order of the color names,
-// 	which must match the order of the color RGB values
-
-enum Colors
-{
-    RED,
-    YELLOW,
-    GREEN,
-    CYAN,
-    BLUE,
-    MAGENTA,
-    WHITE,
-    BLACK
-};
-
-char *ColorNames[] =
-    {
-        (char *)"Red",
-        (char *)"Yellow",
-        (char *)"Green",
-        (char *)"Cyan",
-        (char *)"Blue",
-        (char *)"Magenta",
-        (char *)"White",
-        (char *)"Black"};
-
-// the color definitions:
-// this order must match the menu order
-
-const GLfloat Colors[][3] =
-    {
-        {1., 0., 0.}, // red
-        {1., 1., 0.}, // yellow
-        {0., 1., 0.}, // green
-        {0., 1., 1.}, // cyan
-        {0., 0., 1.}, // blue
-        {1., 0., 1.}, // magenta
-        {1., 1., 1.}, // white
-        {0., 0., 0.}, // black
-};
-
-// fog parameters:
-
-const GLfloat FOGCOLOR[4] = {.0f, .0f, .0f, 1.f};
-const GLenum FOGMODE = GL_LINEAR;
-const GLfloat FOGDENSITY = 0.30f;
-const GLfloat FOGSTART = 1.5f;
-const GLfloat FOGEND = 4.f;
-
-// what options should we compile-in?
-// in general, you don't need to worry about these
-// i compile these in to show class examples of things going wrong
-
-//#define DEMO_Z_FIGHTING
-//#define DEMO_DEPTH_BUFFER
-
-// non-constant global variables:
-
-int ActiveButton;    // current button that is down
-GLuint AxesList;     // list to hold the axes
-int AxesOn;          // != 0 means to draw the axes
-int DebugOn;         // != 0 means to print debugging info
-int DepthCueOn;      // != 0 means to use intensity depth cueing
-int DepthBufferOn;   // != 0 means to use the z-buffer
-int DepthFightingOn; // != 0 means to force the creation of z-fighting
-GLuint BoxList;      // object display list
-int MainWindow;      // window id for main graphics window
-float Scale;         // scaling factor
-int ShadowsOn;       // != 0 means to turn shadows on
-int WhichColor;      // index into Colors[ ]
-int WhichProjection; // ORTHO or PERSP
-int Xmouse, Ymouse;  // mouse values
-float Xrot, Yrot;    // rotation angles in degrees
-
-// function prototypes:
-
-void Animate();
-void Display();
-void DoAxesMenu(int);
-void DoColorMenu(int);
-void DoDepthBufferMenu(int);
-void DoDepthFightingMenu(int);
-void DoDepthMenu(int);
-void DoDebugMenu(int);
-void DoMainMenu(int);
-void DoProjectMenu(int);
-void DoRasterString(float, float, float, char *);
-void DoStrokeString(float, float, float, float, char *);
-float ElapsedSeconds();
-void InitGraphics();
-void InitLists();
-void InitMenus();
-void Keyboard(unsigned char, int, int);
-void MouseButton(int, int, int, int);
-void MouseMotion(int, int);
-void Reset();
-void Resize(int, int);
-void Visibility(int);
-
-void Axes(float);
-
-unsigned char *BmpToTexture(char *, int *, int *);
-int ReadInt(FILE *);
-short ReadShort(FILE *);
-
-void HsvRgb(float[3], float[3]);
-
-void Cross(float[3], float[3], float[3]);
-float Dot(float[3], float[3]);
-float Unit(float[3], float[3]);
-
-// main program:
-
+#include "cessna.550"
+#include "Sample.h"
+#include "Plane.h"
+#define PROPELLER_RADIUS 1.0
+#define PROPELLER_WIDTH 0.4
 int main(int argc, char *argv[])
 {
     // turn on the glut package:
     // (do this before checking argc and argv since it might
     // pull some command line arguments out)
-
     glutInit(&argc, argv);
-
     // setup all the graphics stuff:
-
     InitGraphics();
-
     // create the display structures that will not change:
-
     InitLists();
-
     // init all the global variables used by Display( ):
     // this will also post a redisplay
-
     Reset();
-
     // setup all the user interface stuff:
-
     InitMenus();
-
     // draw the scene once and wait for some interaction:
     // (this will never return)
-
     glutSetWindow(MainWindow);
     glutMainLoop();
-
     // glutMainLoop( ) never actually returns
     // the following line is here to make the compiler happy:
-
     return 0;
 }
 
@@ -266,9 +54,7 @@ void Animate()
 {
     // put animation stuff in here -- change some global variables
     // for Display( ) to find:
-
     // force a call to Display( ) next time it is convenient:
-
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }
@@ -278,67 +64,47 @@ void Animate()
 void Display()
 {
     // set which window we want to do the graphics into:
-
     glutSetWindow(MainWindow);
-
     // erase the background:
-
     glDrawBuffer(GL_BACK);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glEnable(GL_DEPTH_TEST);
 #ifdef DEMO_DEPTH_BUFFER
     if (DepthBufferOn == 0)
         glDisable(GL_DEPTH_TEST);
 #endif
-
     // specify shading to be flat:
-
     glShadeModel(GL_FLAT);
-
     // set the viewport to a square centered in the window:
-
     GLsizei vx = glutGet(GLUT_WINDOW_WIDTH);
     GLsizei vy = glutGet(GLUT_WINDOW_HEIGHT);
     GLsizei v = vx < vy ? vx : vy; // minimum dimension
     GLint xl = (vx - v) / 2;
     GLint yb = (vy - v) / 2;
     glViewport(xl, yb, v, v);
-
     // set the viewing volume:
     // remember that the Z clipping  values are actually
     // given as DISTANCES IN FRONT OF THE EYE
     // USE gluOrtho2D( ) IF YOU ARE DOING 2D !
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if (WhichProjection == ORTHO)
         glOrtho(-2.f, 2.f, -2.f, 2.f, 0.1f, 1000.f);
     else
         gluPerspective(70.f, 1.f, 0.1f, 1000.f);
-
     // place the objects into the scene:
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
     // set the eye position, look-at position, and up-vector:
-
-    gluLookAt(0.f, 0.f, 10.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f);
-
+    gluLookAt(0.f, 0.f, -0.5f, 0.f, 0.f, -0.f, 0.f, 1.f, 0.f);
     // rotate the scene:
-
     glRotatef((GLfloat)Yrot, 0.f, 1.f, 0.f);
     glRotatef((GLfloat)Xrot, 1.f, 0.f, 0.f);
-
     // uniformly scale the scene:
-
     if (Scale < MINSCALE)
         Scale = MINSCALE;
     glScalef((GLfloat)Scale, (GLfloat)Scale, (GLfloat)Scale);
-
     // set the fog parameters:
-
     if (DepthCueOn != 0)
     {
         glFogi(GL_FOG_MODE, FOGMODE);
@@ -352,21 +118,15 @@ void Display()
     {
         glDisable(GL_FOG);
     }
-
     // possibly draw the axes:
-
     if (AxesOn != 0)
     {
         glColor3fv(&Colors[WhichColor][0]);
         glCallList(AxesList);
     }
-
     // since we are using glScalef( ), be sure the normals get unitized:
-
     glEnable(GL_NORMALIZE);
-
     // draw the box object by calling up its display list:
-
     glCallList(BoxList);
 
 #ifdef DEMO_Z_FIGHTING
@@ -378,12 +138,10 @@ void Display()
         glPopMatrix();
     }
 #endif
-
     // draw some gratuitous text that just rotates on top of the scene:
     // i commented out the actual text-drawing calls -- put them back in if you have a use for them
     // a good use for thefirst one might be to have your name on the screen
     // a good use for the second one might be to have vertex numbers on the screen alongside each vertex
-
     glDisable(GL_DEPTH_TEST);
     glColor3f(0.f, 1.f, 1.f);
     // DoRasterString( 0.f, 1.f, 0.f, (char *)"Text That Moves" );
@@ -397,7 +155,6 @@ void Display()
     //
     // the modelview matrix is reset to identity as we don't
     // want to transform these coordinates
-
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -406,14 +163,10 @@ void Display()
     glLoadIdentity();
     glColor3f(1.f, 1.f, 1.f);
     // DoRasterString( 5.f, 5.f, 0.f, (char *)"Text That Doesn't" );
-
     // swap the double-buffered framebuffers:
-
     glutSwapBuffers();
-
     // be sure the graphics buffer has been sent:
     // note: be sure to use glFlush( ) here, not glFinish( ) !
-
     glFlush();
 }
 
@@ -697,70 +450,22 @@ void InitGraphics()
 
 void InitLists()
 {
-    float dx = BOXSIZE / 2.f;
-    float dy = BOXSIZE / 2.f;
-    float dz = BOXSIZE / 2.f;
+
     glutSetWindow(MainWindow);
-
     // create the object:
-
     BoxList = glGenLists(1);
     glNewList(BoxList, GL_COMPILE);
 
-    glBegin(GL_QUADS);
-    float gradient = 0.01f;
-    for (int i = 0; i < 101; i++)
-    {
-        glColor3f(gradient * i * 0.3, gradient * i * 0.5, 0.65);
-        glNormal3f(1., 0., 0.);
-        glVertex3f(dx, -dy, dz);
-        glVertex3f(dx, -dy * i * gradient * 2, -dz * i * gradient);
-        glVertex3f(dx, dy * i * gradient * 2, -dz * i * gradient);
-        glVertex3f(dx, dy, dz);
-        glColor3f(gradient * i * 0.1, 0.3, gradient * i * 0.7);
-        glNormal3f(-1., 0., 0.);
-        glVertex3f(-dx, -dy, dz);
-        glVertex3f(-dx, dy, dz);
-        glVertex3f(-dx, dy * i * gradient * 2, -dz * i * gradient);
-        glVertex3f(-dx, -dy * i * gradient * 2, -dz * i * gradient);
-    }
-    for (int i = 0; i < 101; i++)
-    {
-        glColor3f(0.1, 0.6, gradient * i);
-        glNormal3f(0., 1., 0.);
-        glVertex3f(-dx, dy, dz);
-        glVertex3f(dx, dy, dz);
-        glVertex3f(dx, dy * i * gradient * 2, -dz);
-        glVertex3f(-dx, dy * i * gradient * 2, -dz);
+    DropPlane();
 
-        glColor3f(0.6, 0.1, gradient * i);
-        glNormal3f(0., -1., 0.);
-        glVertex3f(-dx, -dy, dz);
-        glVertex3f(-dx, -dy * i * gradient * 2, -dz);
-        glVertex3f(dx, -dy * i * gradient * 2, -dz);
-        glVertex3f(dx, -dy, dz);
-    }
 
-    // glColor3f(0., 0., 1.);
 
-    // // glNormal3f(1., 0., 0);
-    // glVertex3f(-1, -1, 1);
-    // glVertex3f(1, -1, 1);
-    // glVertex3f(1, 1, 1);
-    // glVertex3f(-1, 1, dz);
 
-    // // glNormal3f(0., 0., -1.);
-    // glVertex3f(-dx, -dy, -dz);
-    // glVertex3f(-dx, dy, -dz);
-    // glVertex3f(dx, dy, -dz);
-    // glVertex3f(dx, -dy, -dz);
 
-    glEnd();
+
 
     glEndList();
-
     // create the axes:
-
     AxesList = glGenLists(1);
     glNewList(AxesList, GL_COMPILE);
     glLineWidth(AXES_WIDTH);
@@ -768,9 +473,7 @@ void InitLists()
     glLineWidth(1.);
     glEndList();
 }
-
 // the keyboard callback:
-
 void Keyboard(unsigned char c, int x, int y)
 {
     if (DebugOn != 0)
@@ -782,24 +485,19 @@ void Keyboard(unsigned char c, int x, int y)
     case 'O':
         WhichProjection = ORTHO;
         break;
-
     case 'p':
     case 'P':
         WhichProjection = PERSP;
         break;
-
     case 'q':
     case 'Q':
     case ESCAPE:
         DoMainMenu(QUIT); // will not return here
         break;            // happy compiler
-
     default:
         fprintf(stderr, "Don't know what to do with keyboard hit: '%c' (0x%0x)\n", c, c);
     }
-
     // force a call to Display( ):
-
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }
@@ -812,44 +510,35 @@ void MouseButton(int button, int state, int x, int y)
 
     if (DebugOn != 0)
         fprintf(stderr, "MouseButton: %d, %d, %d, %d\n", button, state, x, y);
-
     // get the proper button bit mask:
-
     switch (button)
     {
     case GLUT_LEFT_BUTTON:
         b = LEFT;
         break;
-
     case GLUT_MIDDLE_BUTTON:
         b = MIDDLE;
         break;
-
     case GLUT_RIGHT_BUTTON:
         b = RIGHT;
         break;
-
     case SCROLL_WHEEL_UP:
         Scale += SCLFACT * SCROLL_WHEEL_CLICK_FACTOR;
         // keep object from turning inside-out or disappearing:
         if (Scale < MINSCALE)
             Scale = MINSCALE;
         break;
-
     case SCROLL_WHEEL_DOWN:
         Scale -= SCLFACT * SCROLL_WHEEL_CLICK_FACTOR;
         // keep object from turning inside-out or disappearing:
         if (Scale < MINSCALE)
             Scale = MINSCALE;
         break;
-
     default:
         b = 0;
         fprintf(stderr, "Unknown mouse button: %d\n", button);
     }
-
     // button down sets the bit, up clears the bit:
-
     if (state == GLUT_DOWN)
     {
         Xmouse = x;
@@ -890,15 +579,12 @@ void MouseMotion(int x, int y)
 
     Xmouse = x; // new current position
     Ymouse = y;
-
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }
-
 // reset the transformations and the colors:
 // this only sets the global variables --
 // the glut main loop is responsible for redrawing the scene
-
 void Reset()
 {
     ActiveButton = 0;
@@ -913,9 +599,7 @@ void Reset()
     WhichProjection = PERSP;
     Xrot = Yrot = 0.;
 }
-
 // called when user resizes the window:
-
 void Resize(int width, int height)
 {
     // don't really need to do anything since window size is
@@ -924,9 +608,7 @@ void Resize(int width, int height)
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }
-
 // handle a change to the window's visibility:
-
 void Visibility(int state)
 {
     if (DebugOn != 0)
@@ -1397,4 +1079,73 @@ float Unit(float vin[3], float vout[3])
         vout[2] = vin[2];
     }
     return dist;
+}
+void DropPlane()
+{
+    glPushMatrix();
+    glRotatef(-7., 0., 1., 0.);
+    glTranslatef(0., -1., 0.);
+    glRotatef(97., 0., 1., 0.);
+    glRotatef(-15., 0., 0., 1.);
+    glBegin(GL_LINES);
+    for (i = 0, ep = CESSNAedges; i < CESSNAnedges; i++, ep++)
+    {
+
+        // glVertex2f(PROPELLER_RADIUS, PROPELLER_WIDTH / 2.);
+        // glVertex2f(0., 0.);
+        // glVertex2f(PROPELLER_RADIUS, -PROPELLER_WIDTH / 2.);
+
+        // glVertex2f(-PROPELLER_RADIUS, -PROPELLER_WIDTH / 2.);
+        // glVertex2f(0., 0.);
+        // glVertex2f(-PROPELLER_RADIUS, PROPELLER_WIDTH / 2.);
+
+        p0 = &CESSNApoints[ep->p0];
+        p1 = &CESSNApoints[ep->p1];
+        glVertex3f(p0->x, p0->y, p0->z);
+        glVertex3f(p1->x, p1->y, p1->z);
+        glColor3f(0.6, 0.8, 0.5 / CESSNAnedges * i);
+    }
+    glEnd();
+    glPopMatrix();
+    // gluLookAt(0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 1.f, 0.f);
+}
+void DrawMyObj()
+{
+    float dx = BOXSIZE / 2.f;
+    float dy = BOXSIZE / 2.f;
+    float dz = BOXSIZE / 2.f;
+    glBegin(GL_QUADS);
+    float gradient = 0.01f;
+    for (int i = 0; i < 101; i++)
+    {
+        glColor3f(gradient * i * 0.3, gradient * i * 0.5, 0.65);
+        glNormal3f(1., 0., 0.);
+        glVertex3f(dx, -dy, dz);
+        glVertex3f(dx, -dy * i * gradient * 2, -dz * i * gradient);
+        glVertex3f(dx, dy * i * gradient * 2, -dz * i * gradient);
+        glVertex3f(dx, dy, dz);
+        glColor3f(gradient * i * 0.1, 0.3, gradient * i * 0.7);
+        glNormal3f(-1., 0., 0.);
+        glVertex3f(-dx, -dy, dz);
+        glVertex3f(-dx, dy, dz);
+        glVertex3f(-dx, dy * i * gradient * 2, -dz * i * gradient);
+        glVertex3f(-dx, -dy * i * gradient * 2, -dz * i * gradient);
+    }
+    for (int i = 0; i < 101; i++)
+    {
+        glColor3f(0.1, 0.6, gradient * i);
+        glNormal3f(0., 1., 0.);
+        glVertex3f(-dx, dy, dz);
+        glVertex3f(dx, dy, dz);
+        glVertex3f(dx, dy * i * gradient * 2, -dz);
+        glVertex3f(-dx, dy * i * gradient * 2, -dz);
+
+        glColor3f(0.6, 0.1, gradient * i);
+        glNormal3f(0., -1., 0.);
+        glVertex3f(-dx, -dy, dz);
+        glVertex3f(-dx, -dy * i * gradient * 2, -dz);
+        glVertex3f(dx, -dy * i * gradient * 2, -dz);
+        glVertex3f(dx, -dy, dz);
+    }
+    glEnd();
 }
