@@ -15,6 +15,9 @@
 #include <OpenGL/glu.h>
 #include "glut.h"
 #include "cessna.550"
+#include "sample.h"
+#include "enum.h"
+#include "InitGraphics.h"
 //	This is a sample OpenGL / GLUT program
 //
 //	The objective is to draw a 3d object and change the color of the axes
@@ -33,212 +36,8 @@
 //
 //	Author:			Yupeng Qin
 
-// title of these windows:
-
-const char *WINDOWTITLE = "OpenGL / GLUT Sample -- Qin's Graphics";
-const char *GLUITITLE = "User Interface Window";
-
-// what the glui package defines as true and false:
-
-const int GLUITRUE = true;
-const int GLUIFALSE = false;
-
-// the escape key:
-
-const int ESCAPE = 0x1b;
-
-// initial window size:
-
-const int INIT_WINDOW_SIZE = 600;
-
-// size of the 3d box to be drawn:
-
-const float BOXSIZE = 2.f;
-
-// multiplication factors for input interaction:
-//  (these are known from previous experience)
-
-const float ANGFACT = 1.f;
-const float SCLFACT = 0.005f;
-
-// minimum allowable scale factor:
-
-const float MINSCALE = 0.05f;
-
-// scroll wheel button values:
-
-const int SCROLL_WHEEL_UP = 3;
-const int SCROLL_WHEEL_DOWN = 4;
-
-// equivalent mouse movement when we click the scroll wheel:
-
-const float SCROLL_WHEEL_CLICK_FACTOR = 5.f;
-
-// active mouse buttons (or them together):
-
-const int LEFT = 4;
-const int MIDDLE = 2;
-const int RIGHT = 1;
-#define PROPELLER_RADIUS 1.0
-#define PROPELLER_WIDTH 0.4
-// which projection:
-float   TimeCycle;
-float   Time;
-float BladeAngle;
-bool Frozen;
-#define MS_IN_THE_ANIMATION_CYCLE	10000
-
-
-enum Projections
-{
-    ORTHO,
-    PERSP
-};
-
-enum ViewPerspective {
-    OUTSIDE,
-    INSIDE
-};
-
-// which button:
-
-enum ButtonVals
-{
-    RESET,
-    QUIT
-};
-
-// window background color (rgba):
-
-const GLfloat BACKCOLOR[] = {0., 0., 0., 1.};
-
-// line width for the axes:
-
-const GLfloat AXES_WIDTH = 3.;
-
-// the color numbers:
-// this order must match the radio button order, which must match the order of the color names,
-// 	which must match the order of the color RGB values
-
-enum Colors
-{
-    RED,
-    YELLOW,
-    GREEN,
-    CYAN,
-    BLUE,
-    MAGENTA,
-    WHITE,
-    BLACK
-};
-
-char *ColorNames[] =
-    {
-        (char *)"Red",
-        (char *)"Yellow",
-        (char *)"Green",
-        (char *)"Cyan",
-        (char *)"Blue",
-        (char *)"Magenta",
-        (char *)"White",
-        (char *)"Black"};
-
-// the color definitions:
-// this order must match the menu order
-
-const GLfloat Colors[][3] =
-    {
-        {1., 0., 0.}, // red
-        {1., 1., 0.}, // yellow
-        {0., 1., 0.}, // green
-        {0., 1., 1.}, // cyan
-        {0., 0., 1.}, // blue
-        {1., 0., 1.}, // magenta
-        {1., 1., 1.}, // white
-        {0., 0., 0.}, // black
-};
-
-// fog parameters:
-
-const GLfloat FOGCOLOR[4] = {.0f, .0f, .0f, 1.f};
-const GLenum FOGMODE = GL_LINEAR;
-const GLfloat FOGDENSITY = 0.30f;
-const GLfloat FOGSTART = 1.5f;
-const GLfloat FOGEND = 4.f;
-
-// what options should we compile-in?
-// in general, you don't need to worry about these
-// i compile these in to show class examples of things going wrong
-
-//#define DEMO_Z_FIGHTING
-//#define DEMO_DEPTH_BUFFER
-
-// non-constant global variables:
-
-int ActiveButton;    // current button that is down
-GLuint AxesList;     // list to hold the axes
-int AxesOn;          // != 0 means to draw the axes
-int DebugOn;         // != 0 means to print debugging info
-int DepthCueOn;      // != 0 means to use intensity depth cueing
-int DepthBufferOn;   // != 0 means to use the z-buffer
-int DepthFightingOn; // != 0 means to force the creation of z-fighting
-GLuint BoxList;      // object display list
-GLuint PlaneList;    // object display list
-GLuint PolygonList;  // object display list
-GLuint PropellerList;
-int MainWindow;      // window id for main graphics window
-float Scale;         // scaling factor
-int ShadowsOn;       // != 0 means to turn shadows on
-int WhichColor;      // index into Colors[ ]
-int WhichProjection; // ORTHO or PERSP
-int WhichViewMode;  // OUTSIDE or INSIDE
-int Xmouse, Ymouse;  // mouse values
-float Xrot, Yrot;    // rotation angles in degrees
-
-// function prototypes:
-
-void Animate();
-void Display();
-void DoAxesMenu(int);
-void DoColorMenu(int);
-void DoDepthBufferMenu(int);
-void DoDepthFightingMenu(int);
-void DoDepthMenu(int);
-void DoDebugMenu(int);
-void DoMainMenu(int);
-void DoProjectMenu(int);
-void DoRasterString(float, float, float, char *);
-void DoStrokeString(float, float, float, float, char *);
-float ElapsedSeconds();
-void InitGraphics();
-void InitLists();
-void InitMenus();
-void Keyboard(unsigned char, int, int);
-void MouseButton(int, int, int, int);
-void MouseMotion(int, int);
-void Reset();
-void Resize(int, int);
-void Visibility(int);
-
-void Axes(float);
-void CreateObject();
-void CreateAxis();
-void WireFrame();
-void PolygonFrame();
-void Propeller();
-void DoViewModeMenu(int);
-unsigned char *BmpToTexture(char *, int *, int *);
-int ReadInt(FILE *);
-short ReadShort(FILE *);
-
-void HsvRgb(float[3], float[3]);
-
-void Cross(float[3], float[3], float[3]);
-float Dot(float[3], float[3]);
-float Unit(float[3], float[3]);
 
 // main program:
-
 int main(int argc, char *argv[])
 {
     // turn on the glut package:
@@ -248,31 +47,20 @@ int main(int argc, char *argv[])
     glutInit(&argc, argv);
 
     // setup all the graphics stuff:
-
     InitGraphics();
-
     // create the display structures that will not change:
-
     InitLists();
-
     // init all the global variables used by Display( ):
     // this will also post a redisplay
-
     Reset();
-
     // setup all the user interface stuff:
-
     InitMenus();
-
     // draw the scene once and wait for some interaction:
     // (this will never return)
-
     glutSetWindow(MainWindow);
     glutMainLoop();
-
     // glutMainLoop( ) never actually returns
     // the following line is here to make the compiler happy:
-
     return 0;
 }
 
@@ -354,15 +142,7 @@ void Display()
     }
     else
     {
-        gluLookAt(11., 7., 9.,     0., 0., 1.6,     0., 1., 0.);
-        // rotate the scene:
-        glRotatef((GLfloat)Yrot, 0., 1., 0.);
-        glRotatef((GLfloat)Xrot, 1., 0., 0.);
-        // uniformly scale the scene:
-        if (Scale < MINSCALE)
-            Scale = MINSCALE;
-        glScalef((GLfloat)Scale, (GLfloat)Scale, (GLfloat)Scale);
-
+        gluLookAt(16., 7., 15.,     0., 0., 1.6,     0., 1., 0.);
     }
 
     // rotate the scene:
@@ -682,6 +462,7 @@ void InitMenus()
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 void DoViewModeMenu(int id) {
+    Reset();
     WhichViewMode = id;
     glutSetWindow(MainWindow);
     glutPostRedisplay();
@@ -689,89 +470,82 @@ void DoViewModeMenu(int id) {
 // initialize the glut and OpenGL libraries:
 //	also setup callback functions
 
-void InitGraphics()
-{
-    // request the display modes:
-    // ask for red-green-blue-alpha color, double-buffering, and z-buffering:
+// void InitGraphics()
+// {
+//     // request the display modes:
+//     // ask for red-green-blue-alpha color, double-buffering, and z-buffering:
+//     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+//     // set the initial window configuration:
+//     glutInitWindowPosition(0, 0);
+//     glutInitWindowSize(INIT_WINDOW_SIZE, INIT_WINDOW_SIZE);
+//     // open the window and set its title:
+//     MainWindow = glutCreateWindow(WINDOWTITLE);
+//     glutSetWindowTitle(WINDOWTITLE);
+//     // set the framebuffer clear values:
+//     glClearColor(BACKCOLOR[0], BACKCOLOR[1], BACKCOLOR[2], BACKCOLOR[3]);
 
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+//     // setup the callback functions:
+//     // DisplayFunc -- redraw the window
+//     // ReshapeFunc -- handle the user resizing the window
+//     // KeyboardFunc -- handle a keyboard input
+//     // MouseFunc -- handle the mouse button going down or up
+//     // MotionFunc -- handle the mouse moving with a button down
+//     // PassiveMotionFunc -- handle the mouse moving with a button up
+//     // VisibilityFunc -- handle a change in window visibility
+//     // EntryFunc	-- handle the cursor entering or leaving the window
+//     // SpecialFunc -- handle special keys on the keyboard
+//     // SpaceballMotionFunc -- handle spaceball translation
+//     // SpaceballRotateFunc -- handle spaceball rotation
+//     // SpaceballButtonFunc -- handle spaceball button hits
+//     // ButtonBoxFunc -- handle button box hits
+//     // DialsFunc -- handle dial rotations
+//     // TabletMotionFunc -- handle digitizing tablet motion
+//     // TabletButtonFunc -- handle digitizing tablet button hits
+//     // MenuStateFunc -- declare when a pop-up menu is in use
+//     // TimerFunc -- trigger something to happen a certain time from now
+//     // IdleFunc -- what to do when nothing else is going on
 
-    // set the initial window configuration:
+//     glutSetWindow(MainWindow);
+//     glutDisplayFunc(Display);
+//     glutReshapeFunc(Resize);
+//     glutKeyboardFunc(Keyboard);
+//     glutMouseFunc(MouseButton);
+//     glutMotionFunc(MouseMotion);
+//     glutPassiveMotionFunc(MouseMotion);
+//     // glutPassiveMotionFunc( NULL );
+//     glutVisibilityFunc(Visibility);
+//     glutEntryFunc(NULL);
+//     glutSpecialFunc(NULL);
+//     glutSpaceballMotionFunc(NULL);
+//     glutSpaceballRotateFunc(NULL);
+//     glutSpaceballButtonFunc(NULL);
+//     glutButtonBoxFunc(NULL);
+//     glutDialsFunc(NULL);
+//     glutTabletMotionFunc(NULL);
+//     glutTabletButtonFunc(NULL);
+//     glutMenuStateFunc(NULL);
+//     glutTimerFunc(-1, NULL, 0);
 
-    glutInitWindowPosition(0, 0);
-    glutInitWindowSize(INIT_WINDOW_SIZE, INIT_WINDOW_SIZE);
+//     // setup glut to call Animate( ) every time it has
+//     // 	nothing it needs to respond to (which is most of the time)
+//     // we don't need to do this for this program, and really should set the argument to NULL
+//     // but, this sets us up nicely for doing animation
 
-    // open the window and set its title:
+//     glutIdleFunc(Animate);
 
-    MainWindow = glutCreateWindow(WINDOWTITLE);
-    glutSetWindowTitle(WINDOWTITLE);
+//     // init the glew package (a window must be open to do this):
 
-    // set the framebuffer clear values:
-
-    glClearColor(BACKCOLOR[0], BACKCOLOR[1], BACKCOLOR[2], BACKCOLOR[3]);
-
-    // setup the callback functions:
-    // DisplayFunc -- redraw the window
-    // ReshapeFunc -- handle the user resizing the window
-    // KeyboardFunc -- handle a keyboard input
-    // MouseFunc -- handle the mouse button going down or up
-    // MotionFunc -- handle the mouse moving with a button down
-    // PassiveMotionFunc -- handle the mouse moving with a button up
-    // VisibilityFunc -- handle a change in window visibility
-    // EntryFunc	-- handle the cursor entering or leaving the window
-    // SpecialFunc -- handle special keys on the keyboard
-    // SpaceballMotionFunc -- handle spaceball translation
-    // SpaceballRotateFunc -- handle spaceball rotation
-    // SpaceballButtonFunc -- handle spaceball button hits
-    // ButtonBoxFunc -- handle button box hits
-    // DialsFunc -- handle dial rotations
-    // TabletMotionFunc -- handle digitizing tablet motion
-    // TabletButtonFunc -- handle digitizing tablet button hits
-    // MenuStateFunc -- declare when a pop-up menu is in use
-    // TimerFunc -- trigger something to happen a certain time from now
-    // IdleFunc -- what to do when nothing else is going on
-
-    glutSetWindow(MainWindow);
-    glutDisplayFunc(Display);
-    glutReshapeFunc(Resize);
-    glutKeyboardFunc(Keyboard);
-    glutMouseFunc(MouseButton);
-    glutMotionFunc(MouseMotion);
-    glutPassiveMotionFunc(MouseMotion);
-    // glutPassiveMotionFunc( NULL );
-    glutVisibilityFunc(Visibility);
-    glutEntryFunc(NULL);
-    glutSpecialFunc(NULL);
-    glutSpaceballMotionFunc(NULL);
-    glutSpaceballRotateFunc(NULL);
-    glutSpaceballButtonFunc(NULL);
-    glutButtonBoxFunc(NULL);
-    glutDialsFunc(NULL);
-    glutTabletMotionFunc(NULL);
-    glutTabletButtonFunc(NULL);
-    glutMenuStateFunc(NULL);
-    glutTimerFunc(-1, NULL, 0);
-
-    // setup glut to call Animate( ) every time it has
-    // 	nothing it needs to respond to (which is most of the time)
-    // we don't need to do this for this program, and really should set the argument to NULL
-    // but, this sets us up nicely for doing animation
-
-    glutIdleFunc(Animate);
-
-    // init the glew package (a window must be open to do this):
-
-#ifdef WIN32
-    GLenum err = glewInit();
-    if (err != GLEW_OK)
-    {
-        fprintf(stderr, "glewInit Error\n");
-    }
-    else
-        fprintf(stderr, "GLEW initialized OK\n");
-    fprintf(stderr, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
-#endif
-}
+// #ifdef WIN32
+//     GLenum err = glewInit();
+//     if (err != GLEW_OK)
+//     {
+//         fprintf(stderr, "glewInit Error\n");
+//     }
+//     else
+//         fprintf(stderr, "GLEW initialized OK\n");
+//     fprintf(stderr, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+// #endif
+// }
 
 // initialize the display lists that will not change:
 // (a display list is a way to store opengl commands in
