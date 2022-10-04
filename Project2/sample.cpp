@@ -84,6 +84,8 @@ const int RIGHT = 1;
 // which projection:
 float   TimeCycle;
 float   Time;
+float BladeAngle;
+bool Frozen;
 #define MS_IN_THE_ANIMATION_CYCLE	10000
 
 
@@ -91,6 +93,11 @@ enum Projections
 {
     ORTHO,
     PERSP
+};
+
+enum ViewPerspective {
+    OUTSIDE,
+    INSIDE
 };
 
 // which button:
@@ -178,13 +185,13 @@ int DepthFightingOn; // != 0 means to force the creation of z-fighting
 GLuint BoxList;      // object display list
 GLuint PlaneList;    // object display list
 GLuint PolygonList;  // object display list
-GLuint PropellerRList;
-GLuint PropellerLList;
+GLuint PropellerList;
 int MainWindow;      // window id for main graphics window
 float Scale;         // scaling factor
 int ShadowsOn;       // != 0 means to turn shadows on
 int WhichColor;      // index into Colors[ ]
 int WhichProjection; // ORTHO or PERSP
+int WhichViewMode;  // OUTSIDE or INSIDE
 int Xmouse, Ymouse;  // mouse values
 float Xrot, Yrot;    // rotation angles in degrees
 
@@ -218,8 +225,8 @@ void CreateObject();
 void CreateAxis();
 void WireFrame();
 void PolygonFrame();
-void PropellerR();
-void PropellerL();
+void Propeller();
+void DoLookModeMenu(int);
 unsigned char *BmpToTexture(char *, int *, int *);
 int ReadInt(FILE *);
 short ReadShort(FILE *);
@@ -283,6 +290,7 @@ void Animate()
     int ms = glutGet(GLUT_ELAPSED_TIME);                    // milliseconds
     ms %= MS_IN_THE_ANIMATION_CYCLE;
     TimeCycle = (float)ms / (float)MS_IN_THE_ANIMATION_CYCLE;    // [0., 1.]
+    BladeAngle = TimeCycle * 360.;
     // force a call to Display( ) next time it is convenient:
     glutSetWindow(MainWindow);
     glutPostRedisplay();
@@ -389,16 +397,32 @@ void Display()
 
 
     glPushMatrix();
-    glTranslatef(0., 2.9, -2);
-    glScalef(5., 5., 5.);
-    glRotatef(360.*TimeCycle, 0., 1., 0.);
+    glTranslatef(8., 2.9, 0.);
+    glScalef(2., 2., 2.);
+    glRotatef(BladeAngle*30, 0., 1., 0.);
     glRotatef(90., 1., 0., 0.);
     glColor3f(1., 1., 1.);
-    glCallList(PropellerRList);
+    glCallList(PropellerList);
     glPopMatrix();
 
-    // glCallList(PropellerRList);
-    // glCallList(PropellerLList);
+
+    glPushMatrix();
+    glTranslatef(-8., 2.9, 0.);
+    glScalef(2., 2., 2.);
+    glRotatef(BladeAngle*30, 0., 1., 0.);
+    glRotatef(90., 1., 0., 0.);
+    glColor3f(1., 1., 1.);
+    glCallList(PropellerList);
+    glPopMatrix();
+
+
+    glPushMatrix();
+    glTranslatef(0, 0., 7.9);
+    glScalef(4, 4, 4);
+    glRotatef(BladeAngle*15, 0., 0., 1.);
+    glCallList(PropellerList);
+    glPopMatrix();
+
 #ifdef DEMO_Z_FIGHTING
     if (DepthFightingOn != 0)
     {
@@ -610,6 +634,12 @@ void InitMenus()
     glutAddMenuEntry("Orthographic", ORTHO);
     glutAddMenuEntry("Perspective", PERSP);
 
+
+    int perspmenu = glutCreateMenu(DoLookModeMenu);
+    glutAddMenuEntry("Outside", OUTSIDE);
+    glutAddMenuEntry("Inside", INSIDE);
+
+
     int mainmenu = glutCreateMenu(DoMainMenu);
     glutAddSubMenu("Axes", axesmenu);
     glutAddSubMenu("Axis Colors", colormenu);
@@ -632,7 +662,11 @@ void InitMenus()
 
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
-
+void DoLookModeMenu(int id) {
+    WhichProjection = id;
+    glutSetWindow(MainWindow);
+    glutPostRedisplay();
+}
 // initialize the glut and OpenGL libraries:
 //	also setup callback functions
 
@@ -730,11 +764,10 @@ void InitLists()
 
     glutSetWindow(MainWindow);
 
-    // CreateObject();
-    // WireFrame();
-    // PolygonFrame();
-    PropellerR();
-    // PropellerL();
+    CreateObject();
+    WireFrame();
+    PolygonFrame();
+    Propeller();
     CreateAxis();
 }
 void CreateObject()
@@ -800,9 +833,9 @@ void WireFrame()
     struct edge *ep;
     struct point *p0, *p1, *p2;
     glPushMatrix();
-    glTranslatef(0., -1., 0.);
-    glRotatef(97., 0., 1., 0.);
-    glRotatef(-15., 0., 0., 1.);
+    // glTranslatef(0., -1., 0.);
+    glRotatef(90., 0., 1., 0.);
+    // glRotatef(-15., 0., 0., 1.);
     glBegin(GL_LINES);
     for (i = 0, ep = CESSNAedges; i < CESSNAnedges; i++, ep++)
     {
@@ -826,10 +859,10 @@ void PolygonFrame()
     float p01[3], p02[3], n[3];
 
     glPushMatrix();
-    glRotatef(-7., 0., 1., 0.);
-    glTranslatef(0., -1., 0.);
-    glRotatef(97., 0., 1., 0.);
-    glRotatef(-15., 0., 0., 1.);
+    // glRotatef(-7., 0., 1., 0.);
+    // glTranslatef(0., -1., 0.);
+    glRotatef(90., 0., 1., 0.);
+    // glRotatef(-15., 0., 0., 1.);
     glBegin(GL_TRIANGLES);
     for (i = 0, tp = CESSNAtris; i < CESSNAntris; i++, tp++)
     {
@@ -858,10 +891,10 @@ void PolygonFrame()
     glPopMatrix();
     glEndList();
 }
-void PropellerR()
+void Propeller()
 {
-    PropellerRList = glGenLists(1);
-    glNewList(PropellerRList, GL_COMPILE);
+    PropellerList = glGenLists(1);
+    glNewList(PropellerList, GL_COMPILE);
     // glRotatef(90., 1, 0, 0.);
     // glTranslatef(5, 0., -2.2);
     glBegin(GL_TRIANGLES);
@@ -877,25 +910,8 @@ void PropellerR()
     glRotatef(0., 0, 0, 0.);
     glTranslatef(0, 0., 0);
 }
-// void PropellerL()
-// {
-//     PropellerLList = glGenLists(1);
-//     glNewList(PropellerLList, GL_COMPILE);
-//     glRotatef(-90., 1, 0, 0.);
-//     // glTranslatef(-10, 0., -2.2);
-//     glBegin(GL_TRIANGLES);
-//     glColor3f(1, 1, 1);
-//     glVertex3f(PROPELLER_RADIUS, PROPELLER_WIDTH / 2, 0.);
-//     glVertex3f(0, 0, 0);
-//     glVertex3f(PROPELLER_RADIUS, -PROPELLER_WIDTH / 2., 0);
-//     glVertex3f(-PROPELLER_RADIUS, -PROPELLER_WIDTH / 2., 0.);
-//     glVertex3f(0, 0, 0);
-//     glVertex3f(-PROPELLER_RADIUS, PROPELLER_WIDTH / 2., 0.);
-//     glEnd();
-//     glEndList();
-// }
-// the keyboard callback:
 
+// the keyboard callback:
 void Keyboard(unsigned char c, int x, int y)
 {
     if (DebugOn != 0)
@@ -919,6 +935,15 @@ void Keyboard(unsigned char c, int x, int y)
         DoMainMenu(QUIT); // will not return here
         break;            // happy compiler
 
+
+    case 'f':
+    case 'F':
+	Frozen = ! Frozen;
+	if( Frozen )
+		glutIdleFunc( NULL );
+	else
+		glutIdleFunc( Animate );
+	break;
     default:
         fprintf(stderr, "Don't know what to do with keyboard hit: '%c' (0x%0x)\n", c, c);
     }
