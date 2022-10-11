@@ -94,7 +94,7 @@ void DoRasterString(float, float, float, char *);
 void DoStrokeString(float, float, float, float, char *);
 float ElapsedSeconds();
 void InitGraphics();
-void InitLists();
+void InitObjectsLists();
 void InitMenus();
 void Keyboard(unsigned char, int, int);
 void MouseButton(int, int, int, int);
@@ -104,7 +104,7 @@ void Resize(int, int);
 void Visibility(int);
 
 void Axes(float);
-void CreateObject();
+void MyFirstObject();
 void CreateAxis();
 void WireFrame();
 void PolygonFrame();

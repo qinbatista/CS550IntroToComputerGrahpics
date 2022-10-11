@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     // setup all the graphics stuff:
     InitGraphics();
     // create the display structures that will not change:
-    InitLists();
+    InitObjectsLists();
     // init all the global variables used by Display( ):
     // this will also post a redisplay
     Reset();
@@ -65,7 +65,16 @@ int main(int argc, char *argv[])
     // the following line is here to make the compiler happy:
     return 0;
 }
+void InitObjectsLists()
+{
+    glutSetWindow(MainWindow);
+    CreateAxis();
+    MyFirstObject();
+    WireFrame();
+    PolygonFrame();
+    Propeller();
 
+}
 // this is where one would put code that is to be called
 // everytime the glut main loop has nothing to do
 //
@@ -85,15 +94,7 @@ void Animate()
     glutPostRedisplay();
 }
 
-void InitLists()
-{
-    glutSetWindow(MainWindow);
-    CreateObject();
-    WireFrame();
-    PolygonFrame();
-    Propeller();
-    CreateAxis();
-}
+
 
 // draw the complete scene:
 void Display()
