@@ -141,3 +141,27 @@ void OsuSphere(float radius, int slices, int stacks)
     delete[] SphPts;
     SphPts = NULL;
 }
+void CreateEarthSphere()
+{
+    Texture = BmpToTexture("Texture/worldtex.bmp", &Width, &Height);
+    int level = 0, ncomps = 3, border = 0;
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glGenTextures(1, &Tex0);
+    glBindTexture(GL_TEXTURE_2D, Tex0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Texture);
+    OsuSphere(1.0, 20, 20);
+}
+void OsuSphereDisplay()
+{
+    glPushMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, Tex0);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glCallList(osusphereList);
+    glDisable( GL_TEXTURE_2D );
+    glPopMatrix();
+}
