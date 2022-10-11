@@ -74,6 +74,10 @@ void InitObjectsLists()
     WireFrame();
     PolygonFrame();
     Propeller();
+    int width0, height0, width1, height1;
+    unsigned char *TextureArray0 = BmpToTexture("file0.bmp", &width0, &height0);
+    unsigned char *TextureArray1 = BmpToTexture("file1.bmp", &width1, &height1);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 // this is where one would put code that is to be called
 // everytime the glut main loop has nothing to do
@@ -93,8 +97,6 @@ void Animate()
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }
-
-
 
 // draw the complete scene:
 void Display()
