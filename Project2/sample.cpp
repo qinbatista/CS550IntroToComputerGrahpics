@@ -41,7 +41,6 @@
 //
 //	Author:			Yupeng Qin
 
-
 // main program:
 int main(int argc, char *argv[])
 {
@@ -77,9 +76,9 @@ void Animate()
 {
     // put animation stuff in here -- change some global variables
     // for Display( ) to find:
-    int ms = glutGet(GLUT_ELAPSED_TIME);                    // milliseconds
+    int ms = glutGet(GLUT_ELAPSED_TIME); // milliseconds
     ms %= MS_IN_THE_ANIMATION_CYCLE;
-    TimeCycle = (float)ms / (float)MS_IN_THE_ANIMATION_CYCLE;    // [0., 1.]
+    TimeCycle = (float)ms / (float)MS_IN_THE_ANIMATION_CYCLE; // [0., 1.]
     BladeAngle = TimeCycle * 360.;
     // force a call to Display( ) next time it is convenient:
     glutSetWindow(MainWindow);
@@ -135,11 +134,11 @@ void Display()
     // set the eye position, look-at position, and up-vector:
     if (WhichViewMode == INSIDE)
     {
-        gluLookAt(0, 1.2, 1,     0., 5, 10.,     0., 1., 0.);
+        gluLookAt(0, 1.2, 1, 0., 5, 10., 0., 1., 0.);
     }
     else
     {
-        gluLookAt(16., 7., 15.,     0., 0., 1.6,     0., 1., 0.);
+        gluLookAt(16., 7., 15., 0., 0., 1.6, 0., 1., 0.);
     }
 
     // rotate the scene:
@@ -187,33 +186,35 @@ void Display()
     glCallList(PlaneList);
     glCallList(PolygonList);
 
-
-
     glPushMatrix();
     glTranslatef(8., 2.9, 0.);
     glScalef(2., 2., 2.);
-    glRotatef(BladeAngle*30, 0., 1., 0.);
+    glRotatef(BladeAngle * 30, 0., 1., 0.);
     glRotatef(90., 1., 0., 0.);
     glColor3f(1., 1., 1.);
     glCallList(PropellerList);
     glPopMatrix();
-
 
     glPushMatrix();
     glTranslatef(-8., 2.9, 0.);
     glScalef(2., 2., 2.);
-    glRotatef(BladeAngle*30, 0., 1., 0.);
+    glRotatef(-BladeAngle * 30, 0., 1., 0.);
     glRotatef(90., 1., 0., 0.);
     glColor3f(1., 1., 1.);
     glCallList(PropellerList);
     glPopMatrix();
 
-
     glPushMatrix();
     glTranslatef(0, 0., 7.9);
     glScalef(4, 4, 4);
-    glRotatef(BladeAngle*15, 0., 0., 1.);
+    glRotatef(BladeAngle * 15, 0., 0., 1.);
     glCallList(PropellerList);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 5., 15);
+    glScalef(1, 1, 1);
+    glCallList(BoxList);
     glPopMatrix();
 #ifdef DEMO_Z_FIGHTING
     if (DepthFightingOn != 0)
@@ -263,8 +264,4 @@ void Display()
     glFlush();
 }
 
-
-
-
 ///////////////////////////////////////   HANDY UTILITIES:  //////////////////////////
-
