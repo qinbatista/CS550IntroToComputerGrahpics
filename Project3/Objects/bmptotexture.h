@@ -1,6 +1,11 @@
 // read a BMP file into a Texture:
 
 #define VERBOSE false
+
+unsigned char *	BmpToTexture( char *, int *, int * );
+int		ReadInt( FILE * );
+short		ReadShort( FILE * );
+
 #define BMP_MAGIC_NUMBER 0x4d42
 #ifndef BI_RGB
 #define BI_RGB 0
