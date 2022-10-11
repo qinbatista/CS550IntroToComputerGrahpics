@@ -1,3 +1,10 @@
+struct point
+{
+	float x, y, z;		// coordinates
+	float nx, ny, nz;	// surface normal
+	float s, t;		// texture coords
+};
+
 enum Projections
 {
     ORTHO,

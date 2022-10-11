@@ -23,6 +23,7 @@
 #include "Objects/plane.h"
 #include "Objects/bmptotexture.h"
 #include "Objects/Axes.h"
+#include "Objects/osusphere.h"
 //	This is a sample OpenGL / GLUT program
 //
 //	The objective is to draw a 3d object and change the color of the axes
@@ -73,7 +74,6 @@ void InitObjectsLists()
     WireFrame();
     PolygonFrame();
     Propeller();
-
 }
 // this is where one would put code that is to be called
 // everytime the glut main loop has nothing to do
