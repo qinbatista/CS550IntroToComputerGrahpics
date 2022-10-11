@@ -24,6 +24,9 @@
 #include "Objects/bmptotexture.h"
 #include "Objects/Axes.h"
 #include "Objects/osusphere.h"
+
+unsigned char *TextureArray0, *TextureArray1; // global variables GLuint Tex0, Tex1;
+GLuint Tex0, Tex1;
 //	This is a sample OpenGL / GLUT program
 //
 //	The objective is to draw a 3d object and change the color of the axes
@@ -69,15 +72,23 @@ int main(int argc, char *argv[])
 void InitObjectsLists()
 {
     glutSetWindow(MainWindow);
+
+
     CreateAxis();
     MyFirstObject();
-    WireFrame();
-    PolygonFrame();
-    Propeller();
+    // WireFrame();
+    // PolygonFrame();
+    // Propeller();
+    OsuSphere(1,1,1);
+
+
+
     int width0, height0, width1, height1;
-    unsigned char *TextureArray0 = BmpToTexture("file0.bmp", &width0, &height0);
-    unsigned char *TextureArray1 = BmpToTexture("file1.bmp", &width1, &height1);
+    unsigned char *TextureArray0 = BmpToTexture("Texture/worldtex.bmp", &width0, &height0);
+    unsigned char *TextureArray1 = BmpToTexture("Texture/worldtex.bmp", &width1, &height1);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glGenTextures(1, &Tex0); // assign binding “handles”
+    glGenTextures(1, &Tex1);
 }
 // this is where one would put code that is to be called
 // everytime the glut main loop has nothing to do
@@ -135,14 +146,6 @@ void Display()
     glLoadIdentity();
     // set the eye position, look-at position, and up-vector:
     // set the eye position, look-at position, and up-vector:
-    if (WhichViewMode == INSIDE)
-    {
-        gluLookAt(0, 1.2, 1, 0., 5, 10., 0., 1., 0.);
-    }
-    else
-    {
-        gluLookAt(16., 7., 15., 0., 0., 1.6, 0., 1., 0.);
-    }
 
     // rotate the scene:
 
@@ -183,42 +186,55 @@ void Display()
 
     glEnable(GL_NORMALIZE);
 
+
+    if (WhichViewMode == INSIDE)
+    {
+        gluLookAt(0, 1.2, 1, 0., 5, 10., 0., 1., 0.);
+    }
+    else
+    {
+        gluLookAt(16., 7., 15., 0., 0., 1.6, 0., 1., 0.);
+    }
+
     // draw the box object by calling up its display list:
 
     glCallList(BoxList);
     glCallList(PlaneList);
-    glCallList(PolygonList);
+    // glCallList(PolygonList);
 
-    glPushMatrix();
-    glTranslatef(8., 2.9, 0.);
-    glScalef(2., 2., 2.);
-    glRotatef(BladeAngle * 30, 0., 1., 0.);
-    glRotatef(90., 1., 0., 0.);
-    glColor3f(1., 1., 1.);
-    glCallList(PropellerList);
-    glPopMatrix();
+    // glPushMatrix();
+    // glTranslatef(8., 2.9, 0.);
+    // glScalef(2., 2., 2.);
+    // glRotatef(BladeAngle * 30, 0., 1., 0.);
+    // glRotatef(90., 1., 0., 0.);
+    // glColor3f(1., 1., 1.);
+    // glCallList(PropellerList);
+    // glPopMatrix();
 
-    glPushMatrix();
-    glTranslatef(-8., 2.9, 0.);
-    glScalef(2., 2., 2.);
-    glRotatef(-BladeAngle * 30, 0., 1., 0.);
-    glRotatef(90., 1., 0., 0.);
-    glColor3f(1., 1., 1.);
-    glCallList(PropellerList);
-    glPopMatrix();
+    // glPushMatrix();
+    // glTranslatef(-8., 2.9, 0.);
+    // glScalef(2., 2., 2.);
+    // glRotatef(-BladeAngle * 30, 0., 1., 0.);
+    // glRotatef(90., 1., 0., 0.);
+    // glColor3f(1., 1., 1.);
+    // glCallList(PropellerList);
+    // glPopMatrix();
 
-    glPushMatrix();
-    glTranslatef(0, 0., 7.9);
-    glScalef(4, 4, 4);
-    glRotatef(BladeAngle * 15, 0., 0., 1.);
-    glCallList(PropellerList);
-    glPopMatrix();
+    // glPushMatrix();
+    // glTranslatef(0, 0., 7.9);
+    // glScalef(4, 4, 4);
+    // glRotatef(BladeAngle * 15, 0., 0., 1.);
+    // glCallList(PropellerList);
+    // glPopMatrix();
 
-    glPushMatrix();
-    glTranslatef(0, 5., 15);
-    glScalef(1, 1, 1);
-    glCallList(BoxList);
-    glPopMatrix();
+    // glPushMatrix();
+    // glTranslatef(0, 5., 15);
+    // glScalef(1, 1, 1);
+    // glCallList(BoxList);
+    // glPopMatrix();
+
+
+
 #ifdef DEMO_Z_FIGHTING
     if (DepthFightingOn != 0)
     {
