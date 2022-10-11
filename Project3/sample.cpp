@@ -74,7 +74,6 @@ void Animate()
     ms %= MS_IN_THE_ANIMATION_CYCLE;
     TimeCycle = (float)ms / (float)MS_IN_THE_ANIMATION_CYCLE; // [0., 1.]
 
-
     OSUSphereAnimation(TimeCycle);
 
     glutSetWindow(MainWindow);
@@ -97,11 +96,7 @@ void InitObjectsLists()
 void Display()
 {
     DisplaySetting();
-
-
     OsuSphere(1.0, 20, 20);
     OSUSphereDisplay();
-
-
     DisplayBuffer();
 }

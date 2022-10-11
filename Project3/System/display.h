@@ -40,7 +40,7 @@ void DisplaySetting()
     }
     else
     {
-        gluLookAt(16., 7., 15., 0., 0., 1.6, 0., 1., 0.);
+        gluLookAt(8., 4., 7., 0., 0., 1.6, 0., 1., 0.);
     }
 
     // rotate the scene:

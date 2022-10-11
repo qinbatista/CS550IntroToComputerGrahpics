@@ -72,8 +72,16 @@ void OsuSphere(float radius, int slices, int stacks)
             p->nx = x;
             p->ny = y;
             p->nz = z;
-            p->s = (lng + M_PI) / (2. * M_PI)+offset;
-            p->t = (lat + M_PI / 2.) / M_PI+offset;
+            if (TextureMode == DISTORT)
+            {
+                p->s = (lng + M_PI) / (2. * M_PI) + offset;
+                p->t = (lat + M_PI / 2.) / M_PI + offset;
+            }
+            else
+            {
+                p->s = (lng + M_PI) / (2. * M_PI);
+                p->t = (lat + M_PI / 2.) / M_PI;
+            }
         }
     }
 
@@ -162,10 +170,18 @@ void OSUSphereDisplay()
 {
     glPushMatrix();
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, Tex0);
+    // glBindTexture(GL_TEXTURE_2D, Tex0);
+    if (TextureMode == OFF)
+    {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    else
+    {
+        glBindTexture(GL_TEXTURE_2D, Tex0);
+    }
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glCallList(osusphereList);
-    glDisable( GL_TEXTURE_2D );
+    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 }
 void OSUSphereAnimation(float TimeCycle)
