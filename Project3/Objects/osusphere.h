@@ -15,8 +15,11 @@ DrawPoint(struct point *p)
 
 int SphNumLngs, SphNumLats;
 struct point *SphPts;
-
+int Width, Height;
+unsigned char *Texture;
+GLuint Tex0, Tex1; // global variables
 GLuint osusphereList;
+float offset;
 inline struct point *
 SphPtsPointer(int lat, int lng)
 {
@@ -69,8 +72,8 @@ void OsuSphere(float radius, int slices, int stacks)
             p->nx = x;
             p->ny = y;
             p->nz = z;
-            p->s = (lng + M_PI) / (2. * M_PI);
-            p->t = (lat + M_PI / 2.) / M_PI;
+            p->s = (lng + M_PI) / (2. * M_PI)+offset;
+            p->t = (lat + M_PI / 2.) / M_PI+offset;
         }
     }
 
@@ -141,7 +144,7 @@ void OsuSphere(float radius, int slices, int stacks)
     delete[] SphPts;
     SphPts = NULL;
 }
-void CreateEarthSphere()
+void CreateEarthTexture()
 {
     Texture = BmpToTexture("Texture/worldtex.bmp", &Width, &Height);
     int level = 0, ncomps = 3, border = 0;
@@ -153,9 +156,9 @@ void CreateEarthSphere()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, 3, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Texture);
-    OsuSphere(1.0, 20, 20);
+    // OsuSphere(1.0, 20, 20);
 }
-void OsuSphereDisplay()
+void OSUSphereDisplay()
 {
     glPushMatrix();
     glEnable(GL_TEXTURE_2D);
@@ -164,4 +167,8 @@ void OsuSphereDisplay()
     glCallList(osusphereList);
     glDisable( GL_TEXTURE_2D );
     glPopMatrix();
+}
+void OSUSphereAnimation(float TimeCycle)
+{
+    offset = sin(2. * M_PI * TimeCycle);
 }

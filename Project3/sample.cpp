@@ -70,18 +70,17 @@ int main(int argc, char *argv[])
 
 void Animate()
 {
-
     int ms = glutGet(GLUT_ELAPSED_TIME); // milliseconds
     ms %= MS_IN_THE_ANIMATION_CYCLE;
     TimeCycle = (float)ms / (float)MS_IN_THE_ANIMATION_CYCLE; // [0., 1.]
-    BladeAngle = TimeCycle * 360.;
+
+
+    OSUSphereAnimation(TimeCycle);
 
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }
-int Width, Height;
-unsigned char *Texture;
-GLuint Tex0, Tex1; // global variables
+
 void InitObjectsLists()
 {
     glutSetWindow(MainWindow);
@@ -91,16 +90,16 @@ void InitObjectsLists()
     // WireFrame();
     // PolygonFrame();
     // Propeller();
-    CreateEarthSphere();
-    OsuSphere(1,50,50);
+    CreateEarthTexture();
+    // OsuSphere(1,50,50);
 }
 
 // draw the complete scene:
 void Display()
 {
     DisplaySetting();
-
-    OsuSphereDisplay();
+    OsuSphere(1.0, 20, 20);
+    OSUSphereDisplay();
     // glEnable(GL_TEXTURE_2D);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
