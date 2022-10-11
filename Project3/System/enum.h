@@ -15,6 +15,11 @@ enum ViewPerspective {
     OUTSIDE,
     INSIDE
 };
+enum TextureMode {
+    OFF,
+    ON,
+    DISTORT,
+};
 
 // which button:
 

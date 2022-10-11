@@ -1,3 +1,6 @@
+
+int TextureMode;  // OUTSIDE or INSIDE
+void DoTexture();
 void InitMenus()
 {
     glutSetWindow(MainWindow);
@@ -41,6 +44,13 @@ void InitMenus()
     glutAddSubMenu("Axes", axesmenu);
     glutAddSubMenu("Axis Colors", colormenu);
 
+    int Texturemenu = glutCreateMenu(DoTextureMenu);
+    glutAddSubMenu("Axes", axesmenu);
+    glutAddSubMenu("Axis Colors", colormenu);
+    // glutAddMenuEntry("Off Texture", OFF);
+    // glutAddMenuEntry("On Texture", ON);
+    // glutAddMenuEntry("Distort Texture", DISTORT);
+
 #ifdef DEMO_DEPTH_BUFFER
     glutAddSubMenu("Depth Buffer", depthbuffermenu);
 #endif
@@ -81,10 +91,17 @@ void DoViewModeMenu(int id)
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }
+
+void DoTextureMenu(int id)
+{
+    Reset();
+    TextureMode = id;
+    glutSetWindow(MainWindow);
+    glutPostRedisplay();
+}
 void DoAxesMenu(int id)
 {
     AxesOn = id;
-
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }
