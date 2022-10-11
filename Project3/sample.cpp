@@ -14,15 +14,15 @@
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
 #include "MyLibrary/glut.h"
-#include "cessna.550"
 #include "sample.h"
 #include "enum.h"
 #include "InitGraphics.h"
 #include "Menu.h"
+#include "Objects/cessna.550"
+#include "Objects/DrawMyObjects.h"
 #include "Controller.h"
 #include "BMP.h"
-#include "Axes.h"
-#include "DrawMyObjects.h"
+#include "Objects/Axes.h"
 //	This is a sample OpenGL / GLUT program
 //
 //	The objective is to draw a 3d object and change the color of the axes
