@@ -13,7 +13,7 @@
 #include </opt/homebrew/Cellar/glew/2.2.0_1/include/GL/glew.h>
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
-#include "glut.h"
+#include "MyLibrary/glut.h"
 #include "cessna.550"
 #include "sample.h"
 #include "enum.h"
