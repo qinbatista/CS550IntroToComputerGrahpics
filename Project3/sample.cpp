@@ -15,13 +15,13 @@
 #include <OpenGL/glu.h>
 #include "MyLibrary/glut.h"
 #include "sample.h"
-#include "enum.h"
-#include "InitGraphics.h"
-#include "Menu.h"
+#include "System/enum.h"
+#include "System/initialize.h"
+#include "System/controller.h"
+#include "System/menu.h"
 #include "Objects/cessna.550"
 #include "Objects/DrawMyObjects.h"
-#include "Controller.h"
-#include "BMP.h"
+#include "Objects/bmptotexture.h"
 #include "Objects/Axes.h"
 //	This is a sample OpenGL / GLUT program
 //
