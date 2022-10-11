@@ -91,14 +91,14 @@ void InitObjectsLists()
     // PolygonFrame();
     // Propeller();
     CreateEarthTexture();
-    // OsuSphere(1,50,50);
+    OsuSphere(1,50,50);
 }
 
 // draw the complete scene:
 void Display()
 {
     DisplaySetting();
-    OsuSphere(1.0, 20, 20);
+    // OsuSphere(1.0, 20, 20);
     OSUSphereDisplay();
     // glEnable(GL_TEXTURE_2D);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
