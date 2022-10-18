@@ -37,13 +37,14 @@ void ReadObjVTN(char *, int *, int *, int *);
 float Unit(float[3]);
 float Unit(float[3], float[3]);
 
-int InitialObjFile(char *name)
+int InitialObjFile_SMOOTH(char *name)
 {
     int DinoDL = glGenLists(1);
     glNewList(DinoDL, GL_COMPILE);
     glPushMatrix();
     glTranslatef(0, -10., 0.);
     glRotatef(90., 0., 1., 0.);
+    glShadeModel(GL_SMOOTH);
     LoadObjFile(name);
     glPopMatrix();
     glEndList();

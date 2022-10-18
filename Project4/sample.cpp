@@ -13,6 +13,8 @@
 #include </opt/homebrew/Cellar/glew/2.2.0_1/include/GL/glew.h>
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
+#include <list>
+#include <iostream>
 #include "MyLibrary/glut.h"
 #include "sample.h"
 #include "System/enum.h"
@@ -26,6 +28,8 @@
 #include "Objects/bmptotexture.h"
 #include "Objects/Axes.h"
 #include "Objects/osusphere.h"
+using namespace std;
+list<GLuint> modelList;
 //	This is a sample OpenGL / GLUT program
 //
 //	The objective is to draw a 3d object and change the color of the axes
@@ -68,7 +72,6 @@ int main(int argc, char *argv[])
     // the following line is here to make the compiler happy:
     return 0;
 }
-GLuint DinoDL;
 void InitObjectsLists()
 {
     glutSetWindow(MainWindow);
@@ -78,19 +81,19 @@ void InitObjectsLists()
     // PolygonFrame();
     // Propeller();
     CreateEarthTexture();
-    DinoDL = InitialObjFile((char *)"ObjModel/FinalBaseMesh.obj");
+    modelList.push_back(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj"));
 }
-
 // draw the complete scene:
 void Display()
 {
-    DisplaySetting();//system method
-
-    glCallList(DinoDL);
+    DisplaySetting(); // system method
+    for (GLuint model : modelList)
+    {
+        glCallList(model);
+    }
     OsuSphere(1.0, 20, 20);
     OSUSphereDisplay();
-
-    DisplayBuffer();//system method
+    DisplayBuffer(); // system method
 }
 void Animate()
 {
