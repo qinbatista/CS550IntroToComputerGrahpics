@@ -41,7 +41,11 @@ int InitialObjFile(char *name)
 {
     int DinoDL = glGenLists(1);
     glNewList(DinoDL, GL_COMPILE);
+    glPushMatrix();
+    glTranslatef(0, -10., 0.);
+    glRotatef(90., 0., 1., 0.);
     LoadObjFile(name);
+    glPopMatrix();
     glEndList();
     return DinoDL;
 }
@@ -324,7 +328,6 @@ int LoadObjFile(char *name)
 
     return 0;
 }
-
 
 float Unit(float v[3])
 {

@@ -72,20 +72,13 @@ GLuint DinoDL;
 void InitObjectsLists()
 {
     glutSetWindow(MainWindow);
-
     CreateAxis();
     // MyFirstObject();
     // WireFrame();
     // PolygonFrame();
     // Propeller();
-
     CreateEarthTexture();
     DinoDL = InitialObjFile((char *)"ObjModel/FinalBaseMesh.obj");
-
-    // DinoDL = glGenLists(1);
-    // glNewList(DinoDL, GL_COMPILE);
-    // LoadObjFile((char *)"ObjModel/FinalBaseMesh.obj");
-    // glEndList();
 }
 
 // draw the complete scene:

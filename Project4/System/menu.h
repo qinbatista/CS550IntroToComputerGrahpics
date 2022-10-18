@@ -1,6 +1,7 @@
 
 int TextureMode;
 void DoTextureMenu(int);
+
 void InitMenus()
 {
     glutSetWindow(MainWindow);
@@ -73,6 +74,7 @@ void InitMenus()
 }
 void Reset()
 {
+    Light0On = Light1On = Light2On = false;
     ActiveButton = 0;
     AxesOn = 1;
     DebugOn = 0;

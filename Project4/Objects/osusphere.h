@@ -39,7 +39,10 @@ void OsuSphere(float radius, int slices, int stacks)
     // set the globals:
     osusphereList = glGenLists(1);
     glNewList(osusphereList, GL_COMPILE);
+    glPushMatrix();
 
+    glTranslatef(10., 0., 0.);
+    // glRotatef(90., 0., 1., 0.);
     SphNumLngs = slices;
     SphNumLats = stacks;
     if (SphNumLngs < 3)
@@ -116,6 +119,7 @@ void OsuSphere(float radius, int slices, int stacks)
         struct point *p = SphPtsPointer(SphNumLats - 2, ilng); // ilat=SphNumLats-1 is the north pole
         DrawPoint(p);
     }
+
     glEnd();
 
     // connect the south pole to the latitude 1:
@@ -146,6 +150,7 @@ void OsuSphere(float radius, int slices, int stacks)
         }
         glEnd();
     }
+    glPopMatrix();
     glEndList();
     // clean-up:
 
