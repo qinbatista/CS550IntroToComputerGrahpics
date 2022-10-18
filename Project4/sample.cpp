@@ -81,18 +81,32 @@ void InitObjectsLists()
     // PolygonFrame();
     // Propeller();
     CreateEarthTexture();
-    modelList.push_back(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj"));
+    modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", 10, 0, 0, -90, 0, 1, 0));
+    modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", -10, 0, 0, 90, 0, 1, 0));
+    modelList.push_front(InitialObjFile_FLAT((char *)"ObjModel/FinalBaseMesh.obj", 0, 0, -10, 0, 0, 1, 0));
+    SetLight();
+    // SetPointLight(GL_LIGHT0, 0, 20, 0, 1, 1, 1);
+    // SetSpotLight(GL_LIGHT1, 0, 35, 0, 1, 0, 0, 0, 1., 0);
 }
+
 // draw the complete scene:
 void Display()
 {
+
     DisplaySetting(); // system method
+
     for (GLuint model : modelList)
     {
         glCallList(model);
     }
-    OsuSphere(1.0, 20, 20);
-    OSUSphereDisplay();
+    SetPointLight(GL_LIGHT0, 0, 10 + 20 * sin(1. * M_PI * TimeCycle), 0, 1, 1, 1);
+    SetPointLight(GL_LIGHT0, 0, 10 + 20 * sin(1. * M_PI * TimeCycle), 0, 0.3 * sin(1. * M_PI * TimeCycle), 0, 0.9 * sin(1. * M_PI * TimeCycle));
+    SetSpotLight(GL_LIGHT1, 0, 0, 0, 0, 20, 0, 0.5 * sin(1. * M_PI * TimeCycle), 0.2 * sin(1. * M_PI * TimeCycle), 0.1);
+    SetSpotLight(GL_LIGHT2, 0, 0, 0, 10, 20, 0, 0.3 * sin(1. * M_PI * TimeCycle), sin(1. * M_PI * TimeCycle), 0.7);
+    // SetSpotLight(GL_LIGHT1, 0, 10, 0, 0, 20, 0, 0.3 * sin(1. * M_PI * TimeCycle), sin(1. * M_PI * TimeCycle), 0.7);
+    // SetSpotLight(GL_LIGHT2, 0, 0, 0, 0, -20, 0, 0.7 * sin(1. * M_PI * TimeCycle), 0, 0.7 * sin(1. * M_PI * TimeCycle));
+    OSUSphereDisplay(OSUSphere(1.0, 20, 20, 0, 20 * sin(1. * M_PI * TimeCycle), 0));
+    OSUSphereDisplay(OSUSphere(2.0, 20, 20, 0, 30, 0));
     DisplayBuffer(); // system method
 }
 void Animate()

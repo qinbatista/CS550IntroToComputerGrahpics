@@ -1,24 +1,5 @@
-float White[] = {1., 1., 1., 1.};
-float Green[] = {0., 1., 0., 1.};
-void SetLight();
-float *Array3(float a, float b, float c)
-{
-    static float array[4];
-    array[0] = a;
-    array[1] = b;
-    array[2] = c;
-    array[3] = 1.;
-    return array;
-}
-float *MulArray3(float factor, float array0[3])
-{
-    static float array[4];
-    array[0] = factor * array0[0];
-    array[1] = factor * array0[1];
-    array[2] = factor * array0[2];
-    array[3] = 1.;
-    return array;
-}
+#include "light.h"
+
 void DisplaySetting()
 {
     // set which window we want to do the graphics into:
@@ -61,7 +42,7 @@ void DisplaySetting()
     }
     else
     {
-        gluLookAt(8., 4., 7., 0., 0., 1.6, 0., 1., 0.);
+        gluLookAt(0, 10., 20., 0., 15., 0, 0., 1., 0.);
     }
 
     // rotate the scene:
@@ -96,7 +77,6 @@ void DisplaySetting()
         glColor3fv(&Colors[WhichColor][0]);
         glCallList(AxesList);
     }
-    SetLight();
     // SetMaterial();
     glEnable(GL_NORMALIZE);
 }
@@ -113,27 +93,7 @@ void SetMaterial(float r, float g, float b, float shininess)
     glMaterialfv(GL_FRONT, GL_SPECULAR, MulArray3(.8f, White));
     glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 }
-void SetLight()
-{
-    glMatrixMode(GL_MODELVIEW);
-    // glLoadIdentity();
-    // possibly draw the axes:
-    glEnable(GL_LIGHTING);
 
-    glLightfv(GL_LIGHT0, GL_POSITION, Array3(10, 0, 0));
-    gluLookAt(1., 1., 1., 0., 0., 0., 0., 1., 0.);
-
-
-    glEnable(GL_LIGHT0);
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, MulArray3(.2, White));
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, Array3(0., 0., 0.));
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, White);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, White);
-    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.);
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.);
-}
 void DisplayBuffer()
 {
 #ifdef DEMO_Z_FIGHTING

@@ -18,7 +18,6 @@ struct point *SphPts;
 int Width, Height;
 unsigned char *Texture;
 GLuint Tex0, Tex1; // global variables
-GLuint osusphereList;
 float offset;
 inline struct point *
 SphPtsPointer(int lat, int lng)
@@ -34,14 +33,14 @@ SphPtsPointer(int lat, int lng)
     return &SphPts[SphNumLngs * lat + lng];
 }
 
-void OsuSphere(float radius, int slices, int stacks)
+GLuint OSUSphere(float radius, int slices, int stacks, float x, float y, float z)
 {
     // set the globals:
-    osusphereList = glGenLists(1);
+    GLuint osusphereList = glGenLists(1);
     glNewList(osusphereList, GL_COMPILE);
     glPushMatrix();
 
-    glTranslatef(10., 0., 0.);
+    glTranslatef(x, y, z);
     // glRotatef(90., 0., 1., 0.);
     SphNumLngs = slices;
     SphNumLats = stacks;
@@ -156,6 +155,7 @@ void OsuSphere(float radius, int slices, int stacks)
 
     delete[] SphPts;
     SphPts = NULL;
+    return osusphereList;
 }
 void CreateEarthTexture()
 {
@@ -171,7 +171,7 @@ void CreateEarthTexture()
     glTexImage2D(GL_TEXTURE_2D, 0, 3, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Texture);
     // OsuSphere(1.0, 20, 20);
 }
-void OSUSphereDisplay()
+void OSUSphereDisplay(GLuint osusphereList)
 {
     glPushMatrix();
     glEnable(GL_TEXTURE_2D);
