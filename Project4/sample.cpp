@@ -81,10 +81,10 @@ void InitObjectsLists()
     // PolygonFrame();
     // Propeller();
     CreateEarthTexture();
+    SetLight();
     modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", 10, 0, 0, -90, 0, 1, 0));
     modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", -10, 0, 0, 90, 0, 1, 0));
     modelList.push_front(InitialObjFile_FLAT((char *)"ObjModel/FinalBaseMesh.obj", 0, 0, -10, 0, 0, 1, 0));
-    SetLight();
     // SetPointLight(GL_LIGHT0, 0, 20, 0, 1, 1, 1);
     // SetSpotLight(GL_LIGHT1, 0, 35, 0, 1, 0, 0, 0, 1., 0);
 }
@@ -99,13 +99,38 @@ void Display()
     {
         glCallList(model);
     }
-    SetPointLight(GL_LIGHT0, 0, 10 + 20 * sin(1. * M_PI * TimeCycle), 0, 1, 1, 1);
-    SetPointLight(GL_LIGHT0, 0, 10 + 20 * sin(1. * M_PI * TimeCycle), 0, 0.3 * sin(1. * M_PI * TimeCycle), 0, 0.9 * sin(1. * M_PI * TimeCycle));
-    SetSpotLight(GL_LIGHT1, 0, 0, 0, 0, 20, 0, 0.5 * sin(1. * M_PI * TimeCycle), 0.2 * sin(1. * M_PI * TimeCycle), 0.1);
-    SetSpotLight(GL_LIGHT2, 0, 0, 0, 10, 20, 0, 0.3 * sin(1. * M_PI * TimeCycle), sin(1. * M_PI * TimeCycle), 0.7);
-    // SetSpotLight(GL_LIGHT1, 0, 10, 0, 0, 20, 0, 0.3 * sin(1. * M_PI * TimeCycle), sin(1. * M_PI * TimeCycle), 0.7);
-    // SetSpotLight(GL_LIGHT2, 0, 0, 0, 0, -20, 0, 0.7 * sin(1. * M_PI * TimeCycle), 0, 0.7 * sin(1. * M_PI * TimeCycle));
-    OSUSphereDisplay(OSUSphere(1.0, 20, 20, 0, 20 * sin(1. * M_PI * TimeCycle), 0));
+
+    if (Light0On)
+    {
+        SetPointLight(GL_LIGHT0, 0, 0, 0, 1, 1, 1);
+    }
+    else
+    {
+        glDisable(GL_LIGHT0);
+    }
+
+    if (Light1On)
+    {
+        SetPointLight(GL_LIGHT1, 0, 10 + 20 * sin(1. * M_PI * TimeCycle), 0, 0.3 * sin(1. * M_PI * TimeCycle), 0, 0.9 * sin(1. * M_PI * TimeCycle));
+    }
+    else
+    {
+        glDisable(GL_LIGHT1);
+    }
+
+    if (Light2On)
+    {
+        SetSpotLight(GL_LIGHT2, 0, 0, 0, 0, 20, 0, 0.5 * sin(1. * M_PI * TimeCycle), 0.2 * sin(1. * M_PI * TimeCycle), 0.1);
+    }
+    else
+    {
+        glDisable(GL_LIGHT2);
+    }
+    // SetSpotLight(GL_LIGHT2, 0, 0, 0, 10, 20, 0, 0.3 * sin(1. * M_PI * TimeCycle), sin(1. * M_PI * TimeCycle), 0.7);
+
+    OSUSphereDisplayTextureOn(OSUSphere(1.0, 20, 20, 0, 20 * sin(1. * M_PI * TimeCycle), 0));
+    // SetMaterial(1., 0, 0, 0.5);
+    OSUSphereDisplayTextureOn(OSUSphere(1.0, 20, 20, 0, 20, 0));
     OSUSphereDisplay(OSUSphere(2.0, 20, 20, 0, 30, 0));
     DisplayBuffer(); // system method
 }
@@ -114,9 +139,7 @@ void Animate()
     int ms = glutGet(GLUT_ELAPSED_TIME); // milliseconds
     ms %= MS_IN_THE_ANIMATION_CYCLE;
     TimeCycle = (float)ms / (float)MS_IN_THE_ANIMATION_CYCLE; // [0., 1.]
-
     OSUSphereAnimation(TimeCycle);
-
     glutSetWindow(MainWindow);
     glutPostRedisplay();
 }

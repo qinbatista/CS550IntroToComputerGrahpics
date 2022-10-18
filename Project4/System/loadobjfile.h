@@ -44,6 +44,7 @@ int InitialObjFile_SMOOTH(char *name, float px, float py, float pz, float angle,
     glPushMatrix();
     glTranslatef(px, py, pz);
     glRotatef(angle, rx, ry, rz);
+    SetMaterial(1., 0., 0., 0);
     glShadeModel(GL_SMOOTH);
     LoadObjFile(name);
     glPopMatrix();
@@ -57,6 +58,7 @@ int InitialObjFile_FLAT(char *name, float px, float py, float pz, float angle, f
     glPushMatrix();
     glTranslatef(px, py, pz);
     glRotatef(angle, rx, ry, rz);
+    SetMaterial(0., 1., 0., 1);
     glShadeModel(GL_FLAT);
     LoadObjFile(name);
     glPopMatrix();

@@ -39,11 +39,9 @@ void Keyboard(unsigned char c, int x, int y)
     case '1':
         Light1On = !Light1On;
         break;
-
     case '2':
         Light2On = !Light2On;
         break;
-
     default:
         fprintf(stderr, "Don't know what to do with keyboard hit: '%c' (0x%0x)\n", c, c);
     }

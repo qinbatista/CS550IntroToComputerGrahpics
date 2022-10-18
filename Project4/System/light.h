@@ -70,7 +70,7 @@ void SetPointLight(int ilight, float x, float y, float z, float r, float g, floa
 
 void SetSpotLight(int ilight, float x, float y, float z, float xdir, float ydir, float zdir, float r, float g, float b)
 {
-    glShadeModel(GL_SMOOTH);
+    glShadeModel(GL_FLAT);
     glLightfv(ilight, GL_POSITION, Array3(x, y, z));
 
     glLightfv(ilight, GL_SPOT_DIRECTION, Array3(xdir, ydir, zdir));

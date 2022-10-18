@@ -77,7 +77,6 @@ void DisplaySetting()
         glColor3fv(&Colors[WhichColor][0]);
         glCallList(AxesList);
     }
-    // SetMaterial();
     glEnable(GL_NORMALIZE);
 }
 void SetMaterial(float r, float g, float b, float shininess)
