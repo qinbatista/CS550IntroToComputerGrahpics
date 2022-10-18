@@ -78,24 +78,26 @@ void InitObjectsLists()
     // WireFrame();
     // PolygonFrame();
     // Propeller();
-    // CreateEarthTexture();
-    // a = InitialObjFile((char *)"ObjModel/FinalBaseMesh.obj");
 
-    DinoDL = glGenLists(1);
-    glNewList(DinoDL, GL_COMPILE);
-    LoadObjFile((char *)"ObjModel/FinalBaseMesh.obj");
-    glEndList();
+    CreateEarthTexture();
+    DinoDL = InitialObjFile((char *)"ObjModel/FinalBaseMesh.obj");
+
+    // DinoDL = glGenLists(1);
+    // glNewList(DinoDL, GL_COMPILE);
+    // LoadObjFile((char *)"ObjModel/FinalBaseMesh.obj");
+    // glEndList();
 }
 
 // draw the complete scene:
 void Display()
 {
-    DisplaySetting();
-    glCallList(DinoDL);
-    // OsuSphere(1.0, 20, 20);
-    // OSUSphereDisplay();
-    DisplayBuffer();
+    DisplaySetting();//system method
 
+    glCallList(DinoDL);
+    OsuSphere(1.0, 20, 20);
+    OSUSphereDisplay();
+
+    DisplayBuffer();//system method
 }
 void Animate()
 {
