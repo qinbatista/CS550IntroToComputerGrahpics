@@ -20,6 +20,7 @@
 #include "System/controller.h"
 #include "System/menu.h"
 #include "System/display.h"
+#include "System/loadobjfile.h"
 #include "Objects/cessna.550"
 #include "Objects/plane.h"
 #include "Objects/bmptotexture.h"
@@ -67,7 +68,35 @@ int main(int argc, char *argv[])
     // the following line is here to make the compiler happy:
     return 0;
 }
+GLuint DinoDL;
+void InitObjectsLists()
+{
+    glutSetWindow(MainWindow);
 
+    CreateAxis();
+    // MyFirstObject();
+    // WireFrame();
+    // PolygonFrame();
+    // Propeller();
+    // CreateEarthTexture();
+    // a = InitialObjFile((char *)"ObjModel/FinalBaseMesh.obj");
+
+    DinoDL = glGenLists(1);
+    glNewList(DinoDL, GL_COMPILE);
+    LoadObjFile((char *)"ObjModel/FinalBaseMesh.obj");
+    glEndList();
+}
+
+// draw the complete scene:
+void Display()
+{
+    DisplaySetting();
+    glCallList(DinoDL);
+    // OsuSphere(1.0, 20, 20);
+    // OSUSphereDisplay();
+    DisplayBuffer();
+
+}
 void Animate()
 {
     int ms = glutGet(GLUT_ELAPSED_TIME); // milliseconds
@@ -78,25 +107,4 @@ void Animate()
 
     glutSetWindow(MainWindow);
     glutPostRedisplay();
-}
-
-void InitObjectsLists()
-{
-    glutSetWindow(MainWindow);
-
-    CreateAxis();
-    // MyFirstObject();
-    // WireFrame();
-    // PolygonFrame();
-    // Propeller();
-    CreateEarthTexture();
-}
-
-// draw the complete scene:
-void Display()
-{
-    DisplaySetting();
-    OsuSphere(1.0, 20, 20);
-    OSUSphereDisplay();
-    DisplayBuffer();
 }

@@ -115,6 +115,6 @@ unsigned char *BmpToTexture(char *, int *, int *);
 int ReadInt(FILE *);
 short ReadShort(FILE *);
 void HsvRgb(float[3], float[3]);
-void Cross(float[3], float[3], float[3]);
+// void Cross(float[3], float[3], float[3]);
 float Dot(float[3], float[3]);
-float Unit(float[3], float[3]);
+// float Unit(float[3], float[3]);
