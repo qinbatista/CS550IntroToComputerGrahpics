@@ -12,7 +12,7 @@
 
 #include "system/glew.h"
 #include "system/glut.h"
-#include "variable.h"
+#include "initial.h"
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
 //	This is a sample OpenGL / GLUT program
