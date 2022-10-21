@@ -10,7 +10,7 @@
 #pragma warning(disable : 4996)
 #endif
 
-#include </opt/homebrew/Cellar/glew/2.2.0_1/include/GL/glew.h>
+#include <GL/glew.h>
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
 #include <list>
