@@ -10,8 +10,8 @@
 #pragma warning(disable : 4996)
 #endif
 
-#include "glew.h"
-#include "glut.h"
+#include "system/glew.h"
+#include "system/glut.h"
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
 
