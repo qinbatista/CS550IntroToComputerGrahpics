@@ -10,10 +10,10 @@
 #pragma warning(disable : 4996)
 #endif
 
-#include </opt/homebrew/Cellar/glew/2.2.0_1/include/GL/glew.h>
+#include "glew.h"
+#include "glut.h"
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
-#include "glut.h"
 
 //	This is a sample OpenGL / GLUT program
 //
