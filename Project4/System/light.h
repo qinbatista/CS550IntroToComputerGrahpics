@@ -29,14 +29,6 @@ void SetLight()
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, MulArray3(.2, White));
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
-    // glEnable(GL_LIGHT0);
-    // glLightfv(GL_LIGHT0, GL_POSITION, Array3(0, 10, 0));
-    // glLightfv(GL_LIGHT0, GL_AMBIENT, Array3(0., 0., 0.));
-    // glLightfv(GL_LIGHT0, GL_DIFFUSE, White);
-    // glLightfv(GL_LIGHT0, GL_SPECULAR, White);
-    // glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.);
-    // glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.);
-    // glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.);
 }
 void SetPointLight_GL_SMOOTH(int ilight, float x, float y, float z, float r, float g, float b)
 {

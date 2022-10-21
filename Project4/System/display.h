@@ -1,5 +1,7 @@
 #include "light.h"
-
+void DisplayBuffer();
+void WorldDisplay();
+void WorldUpdate();
 void DisplaySetting()
 {
     // set which window we want to do the graphics into:
@@ -92,6 +94,14 @@ void SetMaterial(float r, float g, float b, float shininess)
     glMaterialfv(GL_FRONT, GL_SPECULAR, MulArray3(.8f, White));
     glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 }
+// draw the complete scene:
+void Display()
+{
+
+    DisplaySetting(); // system method
+    WorldDisplay();
+    DisplayBuffer(); // system method
+}
 
 void DisplayBuffer()
 {
@@ -137,4 +147,11 @@ void DisplayBuffer()
     // be sure the graphics buffer has been sent:
     // note: be sure to use glFlush( ) here, not glFinish( ) !
     glFlush();
+}
+void Animate()
+{
+
+    WorldUpdate();
+    glutSetWindow(MainWindow);
+    glutPostRedisplay();
 }

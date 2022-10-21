@@ -94,7 +94,6 @@ void DoRasterString(float, float, float, char *);
 void DoStrokeString(float, float, float, float, char *);
 float ElapsedSeconds();
 void InitGraphics();
-void InitObjectsLists();
 void InitMenus();
 void Keyboard(unsigned char, int, int);
 void MouseButton(int, int, int, int);

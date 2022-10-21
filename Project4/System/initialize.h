@@ -4,6 +4,30 @@ void Visibility(int);
 void Reset();
 void Resize(int, int);
 void InitMenus();
+void MetaInitial(int argc, char *argv[]);
+void WorldInitial();
+void MetaInitial(int argc, char *argv[])
+{
+    // turn on the glut package:
+    // (do this before checking argc and argv since it might
+    // pull some command line arguments out)
+    glutInit(&argc, argv);
+    // setup all the graphics stuff:
+    InitGraphics();
+    // create the display structures that will not change:
+    WorldInitial();
+    // init all the global variables used by Display( ):
+    // this will also post a redisplay
+    Reset();
+    // setup all the user interface stuff:
+    InitMenus();
+    // draw the scene once and wait for some interaction:
+    // (this will never return)
+    glutSetWindow(MainWindow);
+    glutMainLoop();
+    // glutMainLoop( ) never actually returns
+    // the following line is here to make the compiler happy:
+}
 void InitGraphics()
 {
     // request the display modes:
