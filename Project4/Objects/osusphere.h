@@ -196,6 +196,18 @@ void OSUSphereDisplayTextureOn(GLuint osusphereList)
     SetMaterial(0., 1., 0., 1);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindTexture(GL_TEXTURE_2D, Tex0);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glCallList(osusphereList);
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
+}
+void OSUSphereDisplayTextureOnNoLight(GLuint osusphereList)
+{
+    glPushMatrix();
+    glEnable(GL_TEXTURE_2D);
+    SetMaterial(0., 1., 0., 1);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, Tex0);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glCallList(osusphereList);
     glDisable(GL_TEXTURE_2D);

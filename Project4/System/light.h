@@ -23,7 +23,7 @@ float *MulArray3(float factor, float array0[3])
 void SetLight()
 {
     glMatrixMode(GL_MODELVIEW);
-    // glLoadIdentity();
+    glLoadIdentity();
     // possibly draw the axes:
     glEnable(GL_LIGHTING);
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, MulArray3(.2, White));

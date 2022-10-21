@@ -128,7 +128,7 @@ void Display()
     }
     // SetSpotLight(GL_LIGHT2, 0, 0, 0, 10, 20, 0, 0.3 * sin(1. * M_PI * TimeCycle), sin(1. * M_PI * TimeCycle), 0.7);
 
-    OSUSphereDisplayTextureOn(OSUSphere(1.0, 20, 20, 0, 20 * sin(1. * M_PI * TimeCycle), 0));
+    OSUSphereDisplayTextureOnNoLight(OSUSphere(1.0, 20, 20, 0, 20 * sin(1. * M_PI * TimeCycle), 0));
     // SetMaterial(1., 0, 0, 0.5);
     OSUSphereDisplayTextureOn(OSUSphere(1.0, 20, 20, 0, 20, 0));
     OSUSphereDisplay(OSUSphere(2.0, 20, 20, 0, 30, 0));
