@@ -6,6 +6,7 @@ from pyclbr import Class
 
 class CPPBuilder:
     def __init__(self) -> None:
+        # self.__build_command = f"g++  -framework  OpenGL -framework GLUT -g sample.cpp -o sample -Wno-deprecated"
         self.__build_command = f"g++  -framework  OpenGL -framework GLUT -g $(find . -type f -iregex '.*\.cpp') -o sample -Wno-deprecated"
 
     def __delete__(self, _path) -> None:

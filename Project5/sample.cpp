@@ -11,6 +11,7 @@
 #include <GL/glew.h>
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
+#include "glslprogram.h"
 #include <list>
 #include <iostream>
 #include "MyLibrary/glut.h"

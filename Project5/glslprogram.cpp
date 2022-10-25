@@ -1,4 +1,4 @@
-#include "glslprogramP5.h"
+#include "glslprogram.h"
 
 
 struct GLshadertype
