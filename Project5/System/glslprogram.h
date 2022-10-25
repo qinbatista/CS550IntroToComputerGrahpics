@@ -16,7 +16,7 @@
 //#include "glew.h"
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
-#include "MyLibrary/glut.h"
+#include "./../MyLibrary/glut.h"
 #include <map>
 #include <stdarg.h>
 
