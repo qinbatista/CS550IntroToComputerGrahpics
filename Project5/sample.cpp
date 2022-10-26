@@ -30,6 +30,7 @@
 using namespace std;
 list<GLuint> modelList;
 GLSLProgram *Pattern;
+GLuint patternObj;
 int main(int argc, char *argv[])
 {
     MetaInitial(argc, argv);
@@ -44,9 +45,9 @@ void WorldInitial()
     // Propeller();
     CreateEarthTexture();
     SetLight();
-    // modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", 10, 0, 0, -90, 0, 1, 0));
-    // modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", -10, 0, 0, 90, 0, 1, 0));
-    // modelList.push_front(InitialObjFile_FLAT((char *)"ObjModel/FinalBaseMesh.obj", 0, 0, -10, 0, 0, 1, 0));
+    modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", 10, 0, 0, -90, 0, 1, 0));
+    modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", -10, 0, 0, 90, 0, 1, 0));
+    modelList.push_front(InitialObjFile_FLAT((char *)"ObjModel/FinalBaseMesh.obj", 0, 0, -10, 0, 0, 1, 0));
 
     Pattern = new GLSLProgram();
     bool valid = Pattern->Create("Shader/pattern.vert", "Shader/pattern.frag");
@@ -61,12 +62,10 @@ void WorldInitial()
     }
     Pattern->SetVerbose(false);
 
-    // Pattern->Use();
-    // Pattern->SetUniformVariable("uTime", Time);
-    // glCallList(OSUSphere(2.0, 20, 20, 0, 30, 0));
-    // Pattern->UnUse();
-    // SetPointLight(GL_LIGHT0, 0, 20, 0, 1, 1, 1);
-    // SetSpotLight(GL_LIGHT1, 0, 35, 0, 1, 0, 0, 0, 1., 0);
+    patternObj = OSUSphere(2.0, 20, 20, 0, 15, 0);
+
+    SetPointLight(GL_LIGHT0, 0, 20, 0, 1, 1, 1);
+    SetSpotLight(GL_LIGHT1, 0, 35, 0, 1, 0, 0, 0, 1., 0);
 }
 void WorldDisplay()
 {
@@ -101,37 +100,19 @@ void WorldDisplay()
     {
         glDisable(GL_LIGHT2);
     }
-    // SetSpotLight(GL_LIGHT2, 0, 0, 0, 10, 20, 0, 0.3 * sin(1. * M_PI * TimeCycle), sin(1. * M_PI * TimeCycle), 0.7);
+    SetSpotLight(GL_LIGHT2, 0, 0, 0, 10, 20, 0, 0.3 * sin(1. * M_PI * TimeCycle), sin(1. * M_PI * TimeCycle), 0.7);
 
     OSUSphereDisplayTextureOnNoLight(OSUSphere(1.0, 20, 20, 0, 20 * sin(1. * M_PI * TimeCycle), 0));
-    // SetMaterial(1., 0, 0, 0.5);
+    SetMaterial(1., 0, 0, 0.5);
     OSUSphereDisplayTextureOn(OSUSphere(1.0, 20, 20, 0, 20, 0));
     OSUSphereDisplay(OSUSphere(2.0, 20, 20, 0, 30, 0));
 
-    // Pattern->Use();
-    // float A = 1.0;
-    // float B = 1.0;
-    // bool ImUsingTheVertexShader = true;
-    // if (ImUsingTheVertexShader)
-    // {
-    //     A = A + TimeCycle;
-    //     B = B + TimeCycle;
-    // }
-    // Pattern->SetUniformVariable("uA", A);
-    // Pattern->SetUniformVariable("uB", B);
 
-    // float C = 1.0;
-    // float D = 1.0;
-    // bool ImUsingTheFragmentShader = true;
-    // if (ImUsingTheFragmentShader)
-    // {
-    //     C = C + TimeCycle;
-    //     D = D + TimeCycle;
-    // }
-    // Pattern->SetUniformVariable("uC", C);
-    // Pattern->SetUniformVariable("uD", D);
-    // glCallList(OSUSphere(2.0, 20, 20, 0, 30, 0));
-    // Pattern->UnUse();
+    Pattern->Use();
+    Pattern->SetUniformVariable("uTime", TimeCycle);
+    OSUSphereDisplayTextureOn(patternObj);
+    // glCallList(patternObj);
+    Pattern->UnUse();
 }
 void WorldUpdate()
 {

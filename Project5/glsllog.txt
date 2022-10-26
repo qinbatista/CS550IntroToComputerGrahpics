@@ -1,4 +1,11 @@
 
-ERROR: 0:1: '' :  version '330' is not supported
-ERROR: 0:1: '' : syntax error: #version
+ERROR: 0:18: Use of undeclared identifier 'uT0'
+ERROR: 0:18: Use of undeclared identifier 'uDt'
+ERROR: 0:18: Use of undeclared identifier 'uT1'
+ERROR: 0:18: Use of undeclared identifier 'uDt'
+ERROR: 0:25: Use of undeclared identifier 'ambient'
+ERROR: 0:25: Use of undeclared identifier 'uKa'
+ERROR: 0:27: Use of undeclared identifier 'ambient'
+ERROR: 0:27: Use of undeclared identifier 'diffuse'
+ERROR: 0:27: Use of undeclared identifier 'specular'
 

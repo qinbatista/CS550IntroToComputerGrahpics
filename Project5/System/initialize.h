@@ -36,6 +36,7 @@ void InitGraphics()
     // set the initial window configuration:
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(INIT_WINDOW_SIZE, INIT_WINDOW_SIZE);
+
     // open the window and set its title:
     MainWindow = glutCreateWindow(WINDOWTITLE);
     glutSetWindowTitle(WINDOWTITLE);

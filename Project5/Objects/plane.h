@@ -48,8 +48,8 @@ void CreateAxis()
     AxesList = glGenLists(1);
     glNewList(AxesList, GL_COMPILE);
     glLineWidth(AXES_WIDTH);
-    Axes(1.5);
-    glLineWidth(1.);
+    Axes(10);
+    glLineWidth(10.);
     glEndList();
 }
 void WireFrame()
