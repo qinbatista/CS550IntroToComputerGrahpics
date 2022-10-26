@@ -17,9 +17,12 @@ main( )
 {
     vST = gl_MultiTexCoord0.st;
 	vec3 vert = gl_Vertex.xyz;
+    if(bothVF)
+    {
     vert.x *= (sin(uTime));
     vert.y *= (sin(uTime));
     vert.z *= (sin(uTime));
+    }
 	vec4 ECposition = gl_ModelViewMatrix * vec4( vert, 1. );
 	vN = normalize( gl_NormalMatrix * gl_Normal );	// normal vector
 	vL = LightPosition - ECposition.xyz;		// vector from the point // to the light position
