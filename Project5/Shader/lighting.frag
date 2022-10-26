@@ -8,7 +8,7 @@ varying  vec2  vST;			// texture coords
 varying  vec3  vN;			// normal vector
 varying  vec3  vL;			// vector from point to light
 varying  vec3  vE;			// vector from point to eye
-
+uniform float	uTime;		// "Time", from Animate( )
 
 void
 main( )
@@ -20,7 +20,7 @@ main( )
 	vec3 myColor = uColor;
 	if( true )
 	{
-		myColor = vec3( 1,1,1 );
+		myColor = vec3(0.3*sin(uTime),0.5*sin(uTime),0.1);
 	}
     // uKa = 1;
     // uKd = 1;
