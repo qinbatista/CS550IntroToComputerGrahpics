@@ -11,7 +11,6 @@ const float W = 	2.;		// frequency
 void
 main( )
 {
-	vST = gl_MultiTexCoord0.st;
 	vec3 vert = gl_Vertex.xyz;
     vert.x *= (sin(uTime));
     vert.y *= (sin(uTime));
