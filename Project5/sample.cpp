@@ -125,20 +125,23 @@ void WorldDisplay()
     OSUSphereDisplayTextureOn(OSUSphere(1.0, 20, 20, 0, 20, 0));
     OSUSphereDisplay(OSUSphere(2.0, 20, 20, 0, 30, 0));
 
-
-    Pattern->Use();
-    Pattern->SetUniformVariable("uTime", TimeCycle);
-    OSUSphereDisplayTextureOn(patternObj);
-    Pattern->UnUse();
-
     Lighting->Use();
+    Pattern->Use();
     // Lighting->SetUniformVariable("uTime", TimeCycle);
     Lighting->SetUniformVariable("uKa", 1);
-    Lighting->SetUniformVariable("uKd", 1);
+    Lighting->SetUniformVariable("uKd", TimeCycle);
     Lighting->SetUniformVariable("uKs", 1);
     Lighting->SetUniformVariable("uSpecularColor", 1);
-    OSUSphereDisplayTextureOn(lightObj);
+    // OSUSphereDisplayTextureOn(patternObj);
+
+
+
+    Pattern->SetUniformVariable("uTime", TimeCycle);
+    OSUSphereDisplayTextureOn(patternObj);
     Lighting->UnUse();
+    Pattern->UnUse();
+
+
 }
 void WorldUpdate()
 {
