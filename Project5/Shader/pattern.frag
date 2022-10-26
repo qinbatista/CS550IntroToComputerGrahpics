@@ -11,7 +11,9 @@ varying  vec3  vE;			// vector from point to eye
 
 uniform float	uTime;		// "Time", from Animate( )
 
-
+uniform bool bothVF;
+uniform bool FOpen;
+uniform bool VOpen;
 void
 main( )
 {
@@ -22,10 +24,31 @@ main( )
     vec3 myColor = vec3( 1., 0.5, 0. );
 	vec3 mySpecularColor = vec3( 1., 1., 1. );
 
-    if(vST.s<0.5+0.5*sin(uTime)&&vST.t<0.5+0.5*sin(uTime))
+    if(bothVF)
     {
-        myColor = vec3(0.7*sin(uTime),0.3*sin(uTime),0.1);
+        if(vST.s<0.5+0.5*sin(uTime)&&vST.t<0.5+0.5*sin(uTime))
+        {
+            myColor = vec3(0.7*sin(uTime),0.3*sin(uTime),0.1);
+        }
     }
+    else
+    {
+        myColor = vec3(0.7,0.3,0.1);
+    }
+
+
+    if(FOpen)
+    {
+        if(vST.s<0.5+0.5*sin(uTime)&&vST.t<0.5+0.5*sin(uTime))
+        {
+            myColor = vec3(0.7*sin(uTime),0.3*sin(uTime),0.1);
+        }
+    }
+    else
+    {
+        myColor = vec3(0.7,0.3,0.1);
+    }
+
 
     vec3 ambient = uKa * myColor;
     float d = 0.;

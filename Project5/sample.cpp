@@ -1,4 +1,5 @@
 //	Author:			Yupeng Qin
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -33,6 +34,7 @@ GLSLProgram *Pattern;
 GLSLProgram *Lighting;
 GLuint patternObj;
 GLuint lightObj;
+
 int main(int argc, char *argv[])
 {
     MetaInitial(argc, argv);
@@ -115,6 +117,32 @@ void WorldDisplay()
     Pattern->SetUniformVariable("uKd", TimeCycle);
     Pattern->SetUniformVariable("uKs", 1);
     Pattern->SetUniformVariable("uSpecularColor", 1);
+    if(bothVF)
+    {
+        Pattern->SetUniformVariable("bothVF", true);
+    }
+    else
+    {
+        Pattern->SetUniformVariable("bothVF", false);
+    }
+
+    if(FOpen)
+    {
+        Pattern->SetUniformVariable("FOpen", true);
+    }
+    else
+    {
+        Pattern->SetUniformVariable("FOpen", false);
+    }
+
+    if(VOpen)
+    {
+        Pattern->SetUniformVariable("VOpen", true);
+    }
+    else
+    {
+        Pattern->SetUniformVariable("VOpen", false);
+    }
     OSUSphereDisplayTextureOn(patternObj);
     Pattern->UnUse();
 }

@@ -1,6 +1,5 @@
 bool Light0On, Light1On, Light2On;
-bool bothVF;
-bool VOpen,FOpen;
+bool bothVF, VOpen, FOpen;
 // the keyboard callback:
 void Keyboard(unsigned char c, int x, int y)
 {
@@ -26,16 +25,22 @@ void Keyboard(unsigned char c, int x, int y)
         break;            // happy compiler
 
     case 'f':
-    case 'F':
         Frozen = !Frozen;
         if (Frozen)
             glutIdleFunc(NULL);
         else
             glutIdleFunc(Animate);
         break;
+
+    case 'F':
         FOpen = !FOpen;
+        bothVF =false;
+        VOpen = false;
+        break;
+
     case '0':
         Light0On = !Light0On;
+        printf("Light0On");
         break;
 
     case '1':
@@ -47,11 +52,15 @@ void Keyboard(unsigned char c, int x, int y)
 
     case 'b':
         bothVF = !bothVF;
-        break;
-    case 'V':
-        VOpen = !VOpen;
+        printf("b");
         break;
 
+    case 'V':
+        VOpen = !VOpen;
+        bothVF =false;
+        FOpen = false;
+        printf("v");
+        break;
 
     default:
         fprintf(stderr, "Don't know what to do with keyboard hit: '%c' (0x%0x)\n", c, c);

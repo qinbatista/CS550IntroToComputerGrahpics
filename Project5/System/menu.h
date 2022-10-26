@@ -46,11 +46,9 @@ void InitMenus()
     glutAddMenuEntry("On Texture", ON);
     glutAddMenuEntry("Distort Texture", DISTORT);
 
-
     int mainmenu = glutCreateMenu(DoMainMenu);
     glutAddSubMenu("Axes", axesmenu);
     glutAddSubMenu("Axis Colors", colormenu);
-
 
 #ifdef DEMO_DEPTH_BUFFER
     glutAddSubMenu("Depth Buffer", depthbuffermenu);
@@ -75,6 +73,9 @@ void InitMenus()
 void Reset()
 {
     Light0On = Light1On = Light2On = false;
+    bothVF = VOpen = FOpen = true;
+
+
     ActiveButton = 0;
     AxesOn = 1;
     DebugOn = 0;
