@@ -11,7 +11,6 @@
 #include <GL/glew.h>
 #include <OpenGL/GL.h>
 #include <OpenGL/glu.h>
-#include "System/glslprogram.h"
 #include <list>
 #include <iostream>
 #include "MyLibrary/glut.h"
@@ -27,8 +26,10 @@
 #include "Objects/bmptotexture.h"
 #include "Objects/Axes.h"
 #include "Objects/osusphere.h"
+#include "Shader/glslprogram.h"
 using namespace std;
 list<GLuint> modelList;
+GLSLProgram *Pattern;
 int main(int argc, char *argv[])
 {
     MetaInitial(argc, argv);
@@ -43,9 +44,27 @@ void WorldInitial()
     // Propeller();
     CreateEarthTexture();
     SetLight();
-    modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", 10, 0, 0, -90, 0, 1, 0));
-    modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", -10, 0, 0, 90, 0, 1, 0));
-    modelList.push_front(InitialObjFile_FLAT((char *)"ObjModel/FinalBaseMesh.obj", 0, 0, -10, 0, 0, 1, 0));
+    // modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", 10, 0, 0, -90, 0, 1, 0));
+    // modelList.push_front(InitialObjFile_SMOOTH((char *)"ObjModel/FinalBaseMesh.obj", -10, 0, 0, 90, 0, 1, 0));
+    // modelList.push_front(InitialObjFile_FLAT((char *)"ObjModel/FinalBaseMesh.obj", 0, 0, -10, 0, 0, 1, 0));
+
+    Pattern = new GLSLProgram();
+    bool valid = Pattern->Create("Shader/pattern.vert", "Shader/pattern.frag");
+    if (!valid)
+    {
+        fprintf(stderr, "Shader cannot be created!\n");
+        DoMainMenu(QUIT);
+    }
+    else
+    {
+        fprintf(stderr, "Shader created.\n");
+    }
+    Pattern->SetVerbose(false);
+
+    // Pattern->Use();
+    // Pattern->SetUniformVariable("uTime", Time);
+    // glCallList(OSUSphere(2.0, 20, 20, 0, 30, 0));
+    // Pattern->UnUse();
     // SetPointLight(GL_LIGHT0, 0, 20, 0, 1, 1, 1);
     // SetSpotLight(GL_LIGHT1, 0, 35, 0, 1, 0, 0, 0, 1., 0);
 }
@@ -88,6 +107,31 @@ void WorldDisplay()
     // SetMaterial(1., 0, 0, 0.5);
     OSUSphereDisplayTextureOn(OSUSphere(1.0, 20, 20, 0, 20, 0));
     OSUSphereDisplay(OSUSphere(2.0, 20, 20, 0, 30, 0));
+
+    // Pattern->Use();
+    // float A = 1.0;
+    // float B = 1.0;
+    // bool ImUsingTheVertexShader = true;
+    // if (ImUsingTheVertexShader)
+    // {
+    //     A = A + TimeCycle;
+    //     B = B + TimeCycle;
+    // }
+    // Pattern->SetUniformVariable("uA", A);
+    // Pattern->SetUniformVariable("uB", B);
+
+    // float C = 1.0;
+    // float D = 1.0;
+    // bool ImUsingTheFragmentShader = true;
+    // if (ImUsingTheFragmentShader)
+    // {
+    //     C = C + TimeCycle;
+    //     D = D + TimeCycle;
+    // }
+    // Pattern->SetUniformVariable("uC", C);
+    // Pattern->SetUniformVariable("uD", D);
+    // glCallList(OSUSphere(2.0, 20, 20, 0, 30, 0));
+    // Pattern->UnUse();
 }
 void WorldUpdate()
 {
