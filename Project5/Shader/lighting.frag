@@ -4,10 +4,10 @@ uniform vec3  uColor;			// object color
 uniform vec3  uSpecularColor;		// light color
 uniform float   uShininess;		// specular exponent
 
-in  vec2  vST;			// texture coords
-in  vec3  vN;			// normal vector
-in  vec3  vL;			// vector from point to light
-in  vec3  vE;			// vector from point to eye
+varying  vec2  vST;			// texture coords
+varying  vec3  vN;			// normal vector
+varying  vec3  vL;			// vector from point to light
+varying  vec3  vE;			// vector from point to eye
 
 
 void
@@ -22,7 +22,10 @@ main( )
 	{
 		myColor = vec3( 1,1,1 );
 	}
-
+    // uKa = 1;
+    // uKd = 1;
+    // uKs = 1;
+    // uSpecularColor =1;
 	vec3 ambient = uKa * myColor;
 
 	float d = max( dot(Normal,Light), 0. );       // only do diffuse if the light can see the point

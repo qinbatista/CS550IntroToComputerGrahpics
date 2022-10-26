@@ -30,7 +30,9 @@
 using namespace std;
 list<GLuint> modelList;
 GLSLProgram *Pattern;
+GLSLProgram *Lighting;
 GLuint patternObj;
+GLuint lightObj;
 int main(int argc, char *argv[])
 {
     MetaInitial(argc, argv);
@@ -62,7 +64,23 @@ void WorldInitial()
     }
     Pattern->SetVerbose(false);
 
+
+    Lighting = new GLSLProgram();
+    valid = Lighting->Create("Shader/lighting.vert", "Shader/lighting.frag");
+    if (!valid)
+    {
+        fprintf(stderr, "Shader cannot be created!\n");
+        DoMainMenu(QUIT);
+    }
+    else
+    {
+        fprintf(stderr, "Shader created.\n");
+    }
+    Lighting->SetVerbose(false);
+
+
     patternObj = OSUSphere(2.0, 20, 20, 0, 15, 0);
+    lightObj = OSUSphere(2.0, 20, 20, 0, 5, 0);
 
     SetPointLight(GL_LIGHT0, 0, 20, 0, 1, 1, 1);
     SetSpotLight(GL_LIGHT1, 0, 35, 0, 1, 0, 0, 0, 1., 0);
@@ -111,8 +129,16 @@ void WorldDisplay()
     Pattern->Use();
     Pattern->SetUniformVariable("uTime", TimeCycle);
     OSUSphereDisplayTextureOn(patternObj);
-    // glCallList(patternObj);
     Pattern->UnUse();
+
+    Lighting->Use();
+    // Lighting->SetUniformVariable("uTime", TimeCycle);
+    Lighting->SetUniformVariable("uKa", 1);
+    Lighting->SetUniformVariable("uKd", 1);
+    Lighting->SetUniformVariable("uKs", 1);
+    Lighting->SetUniformVariable("uSpecularColor", 1);
+    OSUSphereDisplayTextureOn(lightObj);
+    Lighting->UnUse();
 }
 void WorldUpdate()
 {

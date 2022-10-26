@@ -1,11 +1,6 @@
 
-ERROR: 0:18: Use of undeclared identifier 'uT0'
-ERROR: 0:18: Use of undeclared identifier 'uDt'
-ERROR: 0:18: Use of undeclared identifier 'uT1'
-ERROR: 0:18: Use of undeclared identifier 'uDt'
-ERROR: 0:25: Use of undeclared identifier 'ambient'
-ERROR: 0:25: Use of undeclared identifier 'uKa'
-ERROR: 0:27: Use of undeclared identifier 'ambient'
-ERROR: 0:27: Use of undeclared identifier 'diffuse'
-ERROR: 0:27: Use of undeclared identifier 'specular'
+ERROR: 0:25: Left-hand-side of assignment must not be read-only
+ERROR: 0:26: Left-hand-side of assignment must not be read-only
+ERROR: 0:27: Left-hand-side of assignment must not be read-only
+ERROR: 0:28: Left-hand-side of assignment must not be read-only
 
