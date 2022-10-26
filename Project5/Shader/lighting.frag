@@ -20,12 +20,9 @@ main( )
 	vec3 myColor = uColor;
 	if( true )
 	{
-		myColor = vec3(0.3*sin(uTime),0.5*sin(uTime),0.1);
+		myColor = vec3(0.9*sin(uTime),0.9*sin(uTime),0.1);
 	}
-    // uKa = 1;
-    // uKd = 1;
-    // uKs = 1;
-    // uSpecularColor =1;
+
 	vec3 ambient = uKa * myColor;
 
 	float d = max( dot(Normal,Light), 0. );       // only do diffuse if the light can see the point

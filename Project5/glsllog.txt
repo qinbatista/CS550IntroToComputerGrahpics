@@ -1,6 +1,4 @@
 
-ERROR: 0:25: Left-hand-side of assignment must not be read-only
-ERROR: 0:26: Left-hand-side of assignment must not be read-only
-ERROR: 0:27: Left-hand-side of assignment must not be read-only
-ERROR: 0:28: Left-hand-side of assignment must not be read-only
+ERROR: 0:23: Use of undeclared identifier 'uTime'
+ERROR: 0:23: Use of undeclared identifier 'uTime'
 

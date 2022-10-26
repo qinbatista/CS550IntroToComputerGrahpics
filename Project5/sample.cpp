@@ -133,7 +133,7 @@ void WorldDisplay()
     Pattern->UnUse();
 
     Lighting->Use();
-    // Lighting->SetUniformVariable("uTime", TimeCycle);
+    Lighting->SetUniformVariable("uTime", TimeCycle);
     Lighting->SetUniformVariable("uKa", 1);
     Lighting->SetUniformVariable("uKd", TimeCycle);
     Lighting->SetUniformVariable("uKs", 1);
