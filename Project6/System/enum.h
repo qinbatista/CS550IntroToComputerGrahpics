@@ -4,7 +4,16 @@ struct point
 	float nx, ny, nz;	// surface normal
 	float s, t;		// texture coords
 };
-
+struct Point
+{
+        float x0, y0, z0;       // initial coordinates
+        float x,  y,  z;        // animated coordinates
+};
+struct Curve
+{
+        float r, g, b;
+        Point p0, p1, p2, p3;
+};
 enum Projections
 {
     ORTHO,

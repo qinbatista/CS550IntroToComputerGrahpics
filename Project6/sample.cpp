@@ -22,6 +22,7 @@
 #include "System/menu.h"
 #include "System/display.h"
 #include "System/loadobjfile.h"
+#include "System/curve.h"
 #include "Objects/cessna.550"
 #include "Objects/plane.h"
 #include "Objects/bmptotexture.h"
@@ -34,6 +35,8 @@ GLSLProgram *Pattern;
 GLSLProgram *Lighting;
 GLuint patternObj;
 GLuint lightObj;
+Curve Curves[10];		// if you are creating a pattern of curves
+Curve Stem;				// if you are not
 
 int main(int argc, char *argv[])
 {
@@ -69,6 +72,8 @@ void WorldInitial()
     patternObj = OSUSphere(2.0, 20, 20, 0, 15, 0);
     SetPointLight(GL_LIGHT0, 0, 20, 0, 1, 1, 1);
     SetSpotLight(GL_LIGHT1, 0, 35, 0, 1, 0, 0, 0, 1., 0);
+
+    DrawCatmullRomCurve();
 }
 void WorldDisplay()
 {
