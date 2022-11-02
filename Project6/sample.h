@@ -30,7 +30,6 @@ const int RIGHT = 1;
 #define PROPELLER_RADIUS 1.0
 #define PROPELLER_WIDTH 0.4
 float   TimeCycle;
-float   Time;
 float BladeAngle;
 bool Frozen;
 #define MS_IN_THE_ANIMATION_CYCLE	10000
